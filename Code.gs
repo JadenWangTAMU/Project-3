@@ -45,7 +45,7 @@ function showSidebar() {
  * project file.
  */
 function showDialog() {
-  var ui = HtmlService.createTemplateFromFile('Dialog')
+  var ui = HtmlService.createTemplateFromFile('CharacterSheet')
       .evaluate()
       .setWidth(400)
       .setHeight(150)
