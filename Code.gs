@@ -48,7 +48,7 @@ function showDialog() {
   var ui = HtmlService.createTemplateFromFile('CharacterSheet')
       .evaluate()
       .setWidth(400)
-      .setHeight(150)
+      .setHeight(400)
       .setSandboxMode(HtmlService.SandboxMode.IFRAME);
   DocumentApp.getUi().showModalDialog(ui, DIALOG_TITLE);
 }
