@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <base target="_top">
+    <!-- Use a templated HTML printing scriptlet to import common stylesheet -->
+    <?!= HtmlService.createHtmlOutputFromFile('Stylesheet').getContent(); ?>
+  </head>
+  <body>
+    <div style="display: flex; gap: 70px;">
+      <div class = "encounters">
+        <button class="button" onclick="showInfo('Orc')">Orc</button>
+        <br>
+        <button class="button" onclick="showInfo('Goblin')">Goblin</button>
+        <br>
+        <button class="button" onclick="showInfo('Kobold')">Kobold</button>
+        <br>
+        <button class="button" onclick="showInfo('Dragon')">Dragon</button>
+        <br>
+        <button class="button" onclick="showInfo('Make My Own')">Make My Own</button>
+      </div>
+      <img id="pic-box" style="width: 120px; height: 180px;" />
+    </div>
+
+    <script>
+
+    function showInfo(encounter) {
+      let descriptionBox = document.getElementById("description-box");
+      let statsBox = document.getElementById("stats-box");
+      let picBox = document.getElementById("pic-box");
+      if (encounter === "Orc") {
+          descriptionBox.value = "Orc: A fearsome creature known for its strength and aggression.";
+          statsBox.value = "AC: \nHP: \nSP: \nSTR: \nDEX: \nCON: \nINT: \nWIS: \nCHA";
+          picBox.src = "https://www.dndbeyond.com/avatars/thumbnails/30834/160/1000/1000/638063882785865067.png";
+        } else if (encounter === "Goblin") {
+          descriptionBox.value = "Goblin: A small, mischievous creature often found in caves or forests.";
+          statsBox.value = "AC: \nHP: \nSP: \nSTR: \nDEX: \nCON: \nINT: \nWIS: \nCHA";
+          picBox.src = "https://www.dndbeyond.com/avatars/thumbnails/30783/955/1000/1000/638062024584880857.png";
+        } else if (encounter === "Kobold") {
+          descriptionBox.value = "Kobold: A reptilian humanoid known for its cunning traps and traps.";
+          statsBox.value = "AC: \nHP: \nSP: \nSTR: \nDEX: \nCON: \nINT: \nWIS: \nCHA";
+          picBox.src = "https://www.dndbeyond.com/avatars/thumbnails/30832/207/1000/1000/638063832924455756.png";
+        } else if (encounter === "Dragon") {
+          descriptionBox.value = "Dragon: A massive, winged creature capable of breathing fire.";
+          statsBox.value = "AC: \nHP: \nSP: \nSTR: \nDEX: \nCON: \nINT: \nWIS: \nCHA";
+          picBox.src = "https://d1vzi28wh99zvq.cloudfront.net/images/8957/_product_images/296647/EB_lyrauroth_004.png";
+        } else if (encounter === "Make My Own") {
+          descriptionBox.value = "Create your own encounter!";
+          statsBox.value = "AC: \nHP: \nSP: \nSTR: \nDEX: \nCON: \nINT: \nWIS: \nCHA";
+          picBox.src = "https://upload.wikimedia.org/wikipedia/commons/5/5a/Black_question_mark.png";
+        }
+    }
+    </script>
+
+    <!--<textarea id="description-box" style="width: 50%; height: 175px; margin-top: 20px; text-align:left;" readonly></textarea>
+    <textarea id="stats-box" style="width: 50%; height: 175px; margin-top: 20px; text-align:right;" readonly></textarea>-->
+    <div style="display: flex; gap: 40px;">
+      <textarea id="description-box" style="width: 45%; height: 145px; margin-top: 20px; text-align:left; font-size:17px; font-style:italic; resize: none;" readonly></textarea>
+      <textarea class="stats-box" id="stats-box" style="width: 38%; height: 180px; margin-top: 20px; font-size:15px;" readonly></textarea>
+    </div>
+  </body>
+</html>
+
+<style>
+.button:hover {
+  background: #656565; 
+  color: white;
+  text-align: center;
+  width: 150px;
+  height: 35px;
+}
+.button:active {
+  background: #656565; 
+  color: white;
+  text-align: center;
+  width: 150px;
+  height: 35px;
+}
+.button {
+  text-align: center;
+  width: 150px;
+  height: 35px;
+  font-size: 15px;
+}
+.stats-box {
+    border: none;
+    outline: none;
+    resize: none;
+}
+</style>
+

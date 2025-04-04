@@ -16,6 +16,7 @@ function onOpen(e) {
       .addItem('Show sidebar', 'showSidebar')
       .addItem('Show dialog', 'showDialog')
       .addItem('Dice Roller', 'showDiceRoller')
+      .addItem('Generate Encounter', 'showEncounter')
       .addToUi();
 }
 
@@ -110,4 +111,13 @@ function showDiceRoller() {
       .setHeight(400)
       .setSandboxMode(HtmlService.SandboxMode.IFRAME);
   DocumentApp.getUi().showModalDialog(ui, "Dice Roller");
+}
+
+function showEncounter() {
+  var ui = HtmlService.createTemplateFromFile('Encounter')
+      .evaluate()
+      .setWidth(400)
+      .setHeight(400)
+      .setSandboxMode(HtmlService.SandboxMode.IFRAME);
+  DocumentApp.getUi().showModalDialog(ui, "Generate Encounter");
 }
