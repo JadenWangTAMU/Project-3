@@ -15,6 +15,7 @@ function onOpen(e) {
       .createAddonMenu()
       .addItem('Show sidebar', 'showSidebar')
       .addItem('Show dialog', 'showDialog')
+      .addItem('Dice Roller', 'showDiceRoller')
       .addToUi();
 }
 
@@ -100,4 +101,13 @@ function getDocTitle() {
 function setDocTitle(title) {
   // Use data collected from dialog to manipulate the document.
   DocumentApp.getActiveDocument().setName(title);
+}
+
+function showDiceRoller() {
+  var ui = HtmlService.createTemplateFromFile('DiceRoller')
+      .evaluate()
+      .setWidth(400)
+      .setHeight(400)
+      .setSandboxMode(HtmlService.SandboxMode.IFRAME);
+  DocumentApp.getUi().showModalDialog(ui, "Dice Roller");
 }

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <!-- Use a templated HTML printing scriptlet to import common stylesheet -->
+    <?!= HtmlService.createHtmlOutputFromFile('Stylesheet').getContent(); ?>
+    <style>
+    /* Container for form and image */
+    .form-container {
+      display: flex;
+      align-items: center; /* Aligns image and form vertically */
+    }
+
+    /* Style for the form */
+    .form-container form {
+      margin-right: 20px; /* Add space between form and image */
+    }
+
+    /* Optional: Resize the image */
+    .form-container img {
+      width: 150px;
+      height: 150px;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="form-container">
+      <form>
+        <label for="DiceNumber"># of Dice:</label><br>
+        <input type="text" id="DiceNumber" name="DiceNumber"><br>
+        <label for="SideNumber"># of Sides:</label><br>
+        <input type="text" id="SideNumber" name="SideNumber"><br>
+        <label for="LowestNumber">Lowest #:</label><br>
+        <input type="text" id="LowestNumber" name="LowestNumber"><br>
+        <label for="GreatestNumber">Greatest #:</label><br>
+        <input type="text" id="GreatestNumber" name="GreatestNumber"><br>
+      </form>
+
+      <img src="https://png.pngtree.com/png-clipart/20240826/original/pngtree-red-dice-with-question-mark-concept-poker-object-photo-png-image_15858522.png" alt="Question Dice" />
+    </div>
+
+    <div class="block" id="roll-dice">
+      <!-- Button to trigger dice roll -->
+      <button class="action" id="roll-dice-button" onclick="rollDice()">Roll</button>
+    </div>
+
+    <h3 id="Dice">Result: ?</h3>
+
+    <h3 id="AverageRoll">Average Roll: N/A</h3>
+
+    <h3 id="RollHistory">Roll History: No rolls yet</h3>
+
+    <!-- Client-side JavaScript -->
+    <script>
+      var totalRolls = 0;
+      var totalSum = 0;
+      var rolls = [];
+
+      // Function to handle the dice roll logic
+      function rollDice() {
+        var diceNumber = parseInt(document.getElementById('DiceNumber').value);
+        var sideNumber = parseInt(document.getElementById('SideNumber').value);
+        var lowestNumber = parseInt(document.getElementById('LowestNumber').value);
+        var greatestNumber = parseInt(document.getElementById('GreatestNumber').value);
+
+        // Validate the inputs
+        if (isNaN(diceNumber) || isNaN(sideNumber) || isNaN(lowestNumber) || isNaN(greatestNumber)) {
+          alert("Please enter valid numbers.");
+          return;
+        }
+
+        // Call the Apps Script function to roll the dice on the server-side
+        google.script.run.withSuccessHandler(displayResult).rollDice(diceNumber, sideNumber, lowestNumber, greatestNumber);
+      }
+
+      // Function to display the results in the 'Dice' paragraph
+      function displayResult(result) {
+        // Calculate the sum of the rolls
+        var sum = result.reduce(function (a, b) { return a + b; }, 0);
+
+        totalSum += sum;
+        totalRolls += result.length;
+
+        var average = totalSum / totalRolls;
+
+        rolls.push(result);
+
+        document.getElementById('Dice').textContent = "Result: " + result.join(", ");
+
+        document.getElementById('AverageRoll').textContent = "Average Roll: " + average.toFixed(2);
+
+        document.getElementById('RollHistory').textContent = "Roll History: " + rolls.join("; ");
+      }
+    </script>
+  </body>
+</html>
