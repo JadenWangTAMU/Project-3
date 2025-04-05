@@ -17,6 +17,7 @@ function onOpen(e) {
       .addItem('Show dialog', 'showDialog')
       .addItem('Dice Roller', 'showDiceRoller')
       .addItem('Generate Encounter', 'showEncounter')
+      .addItem('Show Character', 'showCharacter')
       .addToUi();
 }
 
@@ -53,6 +54,15 @@ function showDialog() {
       .setHeight(400)
       .setSandboxMode(HtmlService.SandboxMode.IFRAME);
   DocumentApp.getUi().showModalDialog(ui, DIALOG_TITLE);
+}
+
+function showCharacter() {
+  var ui = HtmlService.createTemplateFromFile('CharacterSheet')
+      .evaluate()
+      .setWidth(400)
+      .setHeight(470)
+      .setSandboxMode(HtmlService.SandboxMode.IFRAME);
+  DocumentApp.getUi().showModalDialog(ui, "Create Character");
 }
 
 /**

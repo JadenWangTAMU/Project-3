@@ -4,8 +4,105 @@
     <base target="_top">
     <!-- Use a templated HTML printing scriptlet to import common stylesheet -->
     <?!= HtmlService.createHtmlOutputFromFile('Stylesheet').getContent(); ?>
+
+    <style>
+      * {
+          box-sizing: border-box;
+      }
+
+      /* Create two equal columns that floats next to each other */
+      .column {
+        float: left;
+        width: 50%;
+        height: 450px;
+        padding: 10px;
+      }
+
+      /* Clear floats after the columns */
+      .row:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+    </style>
+
   </head>
   <body>
-    <p>This is a test :)</p>
+    <div class="row">
+      <div class="column" style="background-color:#bbb;">
+        <p>Class:</p>
+        <div id="classType" style="display: flex; flex-direction: column; align-items: center;">
+          <button type='button'>Wizard</button>
+          <button type='button'>Bard</button>
+          <button type='button'>Rouge</button>
+          <button type='button'>Cleric</button>
+          <button type='button'>Custom</button>
+        </div>
+
+        <br>
+        <p>Description:</p>
+        <div id="description" style='text-align: center;'>
+          <textarea name="Text1" rows="10"></textarea>
+        </div>
+      </div>
+
+      <div class="column" style="background-color:#bbb;">
+        <div id="image" style='text-align: center;'>
+          <img src="https://www.w3schools.com/html/pic_trulli.jpg" alt="Character Image" width="100%" height="100%">
+        </div>
+
+        <br>
+
+        <div id="statistics" style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+          <form style="display: flex; flex-direction: column; gap: 8px;">
+            <!-- Repeat block for each stat -->
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label for="AC" style="width: 40px; text-align: left;">AC:</label>
+              <input type="number" id="AC" name="AC" style="width: 100px; text-align: center;">
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label for="HP" style="width: 40px; text-align: left;">HP:</label>
+              <input type="number" id="HP" name="HP" style="width: 100px; text-align: center;">
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label for="SP" style="width: 40px; text-align: left;">SP:</label>
+              <input type="number" id="SP" name="SP" style="width: 100px; text-align: center;">
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label for="STR" style="width: 40px; text-align: left;">STR:</label>
+              <input type="number" id="STR" name="STR" style="width: 100px; text-align: center;">
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label for="DEX" style="width: 40px; text-align: left;">DEX:</label>
+              <input type="number" id="DEX" name="DEX" style="width: 100px; text-align: center;">
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label for="CON" style="width: 40px; text-align: left;">CON:</label>
+              <input type="number" id="CON" name="CON" style="width: 100px; text-align: center;">
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label for="INT" style="width: 40px; text-align: left;">INT:</label>
+              <input type="number" id="INT" name="INT" style="width: 100px; text-align: center;">
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label for="WIS" style="width: 40px; text-align: left;">WIS:</label>
+              <input type="number" id="WIS" name="WIS" style="width: 100px; text-align: center;">
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label for="CHA" style="width: 40px; text-align: left;">CHA:</label>
+              <input type="number" id="CHA" name="CHA" style="width: 100px; text-align: center;">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
