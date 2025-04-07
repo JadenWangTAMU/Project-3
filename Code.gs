@@ -17,6 +17,7 @@ function onOpen(e) {
       .addItem('Show dialog', 'showDialog')
       .addItem('Dice Roller', 'showDiceRoller')
       .addItem('Generate Encounter', 'showEncounter')
+      .addItem('Generate Environment', 'showEnvironment')
       .addItem('Show Character', 'showCharacter')
       .addToUi();
 }
@@ -130,4 +131,13 @@ function showEncounter() {
       .setHeight(400)
       .setSandboxMode(HtmlService.SandboxMode.IFRAME);
   DocumentApp.getUi().showModalDialog(ui, "Generate Encounter");
+}
+
+function showEnvironment() {
+  var ui = HtmlService.createTemplateFromFile('Environment')
+      .evaluate()
+      .setWidth(400)
+      .setHeight(400)
+      .setSandboxMode(HtmlService.SandboxMode.IFRAME);
+  DocumentApp.getUi().showModalDialog(ui, "Generate Environment");
 }

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!-- This document serves as the UI for the character sheet -->
+
+<html>
+  <head>
+    <base target="_top">
+    <!-- Use a templated HTML printing scriptlet to import common stylesheet -->
+    <?!= HtmlService.createHtmlOutputFromFile('Stylesheet').getContent(); ?>
+  </head>
+  <body>
+    <div id= "button-pics" style="display: flex; gap: 40px;">
+      <div class = "encounters">
+        <button class="button" onclick="showInfo('Enchanted Forest')">Enchanted Forest</button>
+        <br>
+        <button class="button" onclick="showInfo('Mountain Range')">Mountain Range</button>
+        <br>
+        <button class="button" onclick="showInfo('Misty Swamp')">Misty Swamp</button>
+        <br>
+        <button class="button" onclick="showInfo('Market Town')">Market Town</button>
+        <br>
+        <button class="button" onclick="showInfo('Make My Own')">Make My Own</button>
+      </div>
+      <img id="pic-box" />
+    </div>
+
+    <script>
+
+    function showInfo(encounter) {
+      let descriptionBox = document.getElementById("description-box");
+      let picBox = document.getElementById("pic-box");
+      let buttonPics = document.getElementById("button-pics");
+      if (encounter === "Enchanted Forest") {
+          descriptionBox.value = "A mystical woodland where the trees seem to whisper ancient secrets. The air is thick with magic, and strange, glowing flora light up the paths. A place of beauty and danger in equal measure.";
+          picBox.src = "https://static.wixstatic.com/media/70fbf4_c1df13904ddd430589d8dd8e370ca6d9~mv2.jpeg/v1/fill/w_980,h_653,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/70fbf4_c1df13904ddd430589d8dd8e370ca6d9~mv2.jpeg";
+          picBox.style="width: 200px; height: 180px;";
+          buttonPics.style = "display: flex; gap: 30px;";
+        } else if (encounter === "Mountain Range") {
+          descriptionBox.value = "Towering peaks stretch across the horizon, their snow-covered summits piercing the sky. Rugged terrain and hidden valleys make this a land of extremes, where only the most resilient can thrive.";
+          picBox.src = "https://uploads.worldanvil.com/uploads/images/49081822e6414785440d24dd845e8c69.jpeg";
+          picBox.style="width: 200px; height: 180px;";
+          buttonPics.style = "display: flex; gap: 30px;";
+        } else if (encounter === "Misty Swamp") {
+          descriptionBox.value = "A damp, eerie expanse where thick fog rolls over the murky waters. The ground squelches beneath your feet, and the distant croaks of unseen creatures echo through the trees. Danger lurks in every shadow.";
+          picBox.src = "https://partybickering.wordpress.com/wp-content/uploads/2019/12/colrathisle.jpg";
+          picBox.style="width: 200px; height: 180px;";
+          buttonPics.style = "display: flex; gap: 30px;";
+        } else if (encounter === "Market Town") {
+          descriptionBox.value = "A bustling hub of commerce, where merchants from all over the world trade goods in colorful stalls. The air is filled with the scent of fresh produce, exotic spices, and the sound of lively chatter and bargaining.";
+          picBox.src = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh-yFHSD7fzzsBMnXzUhVrEsEfHHDaARhY44eNwJJvxE4pAB0gP37cYtvIoOCzhkNL6tXzMM4S33Vl3TtTE7fSsPxgIGVU4AiVGfcJZlM4f3x7_UHzdJFbpbcaTRotJ4JDAfLX9ZMxdzlQ/s1600/m2.jpg";
+          picBox.style="width: 200px; height: 180px;";
+          buttonPics.style = "display: flex; gap: 30px;";
+        } else if (encounter === "Make My Own") {
+          descriptionBox.value = "Create your own environment!";
+          picBox.src = "https://upload.wikimedia.org/wikipedia/commons/5/5a/Black_question_mark.png";
+          picBox.style= "width: 120px; height: 180px;";
+          buttonPics.style = "display: flex; gap: 70px;";
+        }
+    }
+    </script>
+
+    <div style="margin-left:180px;">
+      <textarea id="description-box" style="width: 200px; height: 165px; margin-top: 20px; text-align:left; font-size:15px; font-style:italic; resize: none;" readonly></textarea>
+    </div>
+  </body>
+</html>
+
+<style>
+.button:hover {
+  background: #656565; 
+  color: white;
+  text-align: center;
+  width: 150px;
+  height: 35px;
+}
+.button:active {
+  background: #656565; 
+  color: white;
+  text-align: center;
+  width: 150px;
+  height: 35px;
+}
+.button {
+  text-align: center;
+  width: 150px;
+  height: 35px;
+  font-size: 15px;
+}
+img {
+    object-fit: cover;
+}
+</style>
