@@ -2,9 +2,6 @@
  * @OnlyCurrentDoc  Limits the script to only accessing the current document.
  */
 
-var DIALOG_TITLE = 'Example Dialog';
-var SIDEBAR_TITLE = 'Example Sidebar';
-
 /**
  * Adds a custom menu with items to show the sidebar and dialog.
  *
@@ -14,7 +11,6 @@ function onOpen(e) {
   DocumentApp.getUi()
       .createAddonMenu()
       .addItem('Show sidebar', 'showSidebar')
-      .addItem('Show dialog', 'showDialog')
       .addItem('Dice Roller', 'showDiceRoller')
       .addItem('Generate Encounter', 'showEncounter')
       .addItem('Generate Environment', 'showEnvironment')
@@ -42,7 +38,7 @@ function onInstall(e) {
 function showSidebar() {
   var ui = HtmlService.createTemplateFromFile('Sidebar')
       .evaluate()
-      .setTitle(SIDEBAR_TITLE)
+      .setTitle("Sidebar")
       .setSandboxMode(HtmlService.SandboxMode.IFRAME);
   DocumentApp.getUi().showSidebar(ui);
 }
@@ -51,14 +47,6 @@ function showSidebar() {
  * Opens a dialog. The dialog structure is described in the Dialog.html
  * project file.
  */
-function showDialog() {
-  var ui = HtmlService.createTemplateFromFile('CharacterSheet')
-      .evaluate()
-      .setWidth(400)
-      .setHeight(400)
-      .setSandboxMode(HtmlService.SandboxMode.IFRAME);
-  DocumentApp.getUi().showModalDialog(ui, DIALOG_TITLE);
-}
 
 function showCharacter() {
   var ui = HtmlService.createTemplateFromFile('CharacterSheet')
