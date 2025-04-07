@@ -28,10 +28,11 @@
 
   </head>
   <body>
-    <div class="row">
-      <div class="column" style="background-color:#bbb;">
+    <div class="row" style="background-color:#bbb;">
+      <div class="column">
         <p>Class:</p>
         <div id="classType" style="display: flex; flex-direction: column; align-items: center;">
+          <!-- I hate it here. Wizard button won't align???? -->
           <button type='button'>Wizard</button>
           <button type='button'>Bard</button>
           <button type='button'>Rouge</button>
@@ -103,6 +104,12 @@
           </form>
         </div>
       </div>
+    </div>
+
+    <!-- I don't know why but this button hates me and will not change color >:^( -->
+    <div class="SetButtons" style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 10px">
+      <button type="button" style="background-color: #008CBA !important;">Save</button>
+      <button type="button">Cancel</button>
     </div>
   </body>
 </html>

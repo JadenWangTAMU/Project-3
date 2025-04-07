@@ -19,6 +19,9 @@ function onOpen(e) {
       .addItem('Generate Encounter', 'showEncounter')
       .addItem('Generate Environment', 'showEnvironment')
       .addItem('Show Character', 'showCharacter')
+      .addItem('Visualize Stats', 'showVisualizeStats')
+      .addItem('Show Inventory', 'showInventory')
+      .addItem('Show Probability', 'showProbability')
       .addToUi();
 }
 
@@ -140,4 +143,31 @@ function showEnvironment() {
       .setHeight(400)
       .setSandboxMode(HtmlService.SandboxMode.IFRAME);
   DocumentApp.getUi().showModalDialog(ui, "Generate Environment");
+}
+
+function showVisualizeStats() {
+  var ui = HtmlService.createTemplateFromFile('VisualizeStats')
+      .evaluate()
+      .setWidth(400)
+      .setHeight(400)
+      .setSandboxMode(HtmlService.SandboxMode.IFRAME);
+  DocumentApp.getUi().showModalDialog(ui, "Visualize Stats");
+}
+
+function showInventory() {
+  var ui = HtmlService.createTemplateFromFile('Inventory')
+      .evaluate()
+      .setWidth(400)
+      .setHeight(400)
+      .setSandboxMode(HtmlService.SandboxMode.IFRAME);
+  DocumentApp.getUi().showModalDialog(ui, "Inventory");
+}
+
+function showProbability() {
+  var ui = HtmlService.createTemplateFromFile('ProbabilityCalc')
+      .evaluate()
+      .setWidth(600)
+      .setHeight(500)
+      .setSandboxMode(HtmlService.SandboxMode.IFRAME);
+  DocumentApp.getUi().showModalDialog(ui, "Generate Probability");
 }
