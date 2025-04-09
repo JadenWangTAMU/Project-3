@@ -2,18 +2,24 @@
 <html>
   <body>
     <h2>RPG Player</h2>
-    <select id="dropdown" onchange="onDropdownChange()">
+    <select id="dropdownRPGPlayer" onchange="onDropdownChange()">
       <option value="generateCharacter">Generate Character</option>
       <option value="diceRoller">Dice Roller</option>
       <option value="visualizeStats">VisualizeStats</option>
       <option value="inventory">Inventory</option>
     </select>
+    <div class="block" id="open-RPG-Player">
+      <button class="action" id="open-RPG-Player-button" onclick="openRPGPlayer()">Open RPG Player</button>
+    </div>
     <h2>GameMaster</h2>
-    <select id="dropdown" onchange="onDropdownChange()">
+    <select id="dropdownGameMaster" onchange="onDropdownChange()">
       <option value="generateEncounter">Generate Encounter</option>
       <option value="generateEnvironment">Generate Environment</option>
       <option value="probabilityCalculator">Probability Calculator</option>
     </select>
+    <div class="block" id="open-Game-Master">
+      <button class="action" id="open-Game-Master-button" onclick="openGameMaster()">Open Game Master</button>
+    </div>
     <h2>Data Options</h2>
     <div class="block" id="import-data">
       <button class="action" id="import-data-button">Import Data</button>
@@ -22,5 +28,35 @@
     <div class="block" id="export-data">
       <button class="action" id="export-data-button">Export Data</button>
     </div>
+
+    <script>
+      function openRPGPlayer() {
+        var dropdownValue = document.getElementById('dropdownRPGPlayer').value;
+        if (dropdownValue === "diceRoller") {
+          google.script.run.showDiceRoller();
+        }
+        else if (dropdownValue === "generateCharacter") {
+          google.script.run.showCharacter();
+        }
+        else if (dropdownValue === "visualizeStats") {
+          google.script.run.showVisualizeStats();
+        }
+        else if (dropdownValue === "inventory") {
+          google.script.run.showInventory();
+        }
+      }
+      function openGameMaster() {
+        var dropdownValue = document.getElementById('dropdownGameMaster').value;
+        if (dropdownValue === "generateEncounter") {
+          google.script.run.showEncounter();
+        }
+        else if (dropdownValue === "generateEnvironment") {
+          google.script.run.showEnvironment();
+        }
+        else if (dropdownValue === "probabilityCalculator") {
+          google.script.run.showProbability();
+        }
+      }
+    </script>
   </body>
 </html>

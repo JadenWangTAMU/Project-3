@@ -8,7 +8,19 @@ function Character(AC, HP, SP, STR, DEX, CON, INT, WIS, CHA) { // constructor fu
   this.INT = INT;  // Intelligence
   this.WIS = WIS;  // Wisdom
   this.CHA = CHA;  // Charisma
+
+  this.inventory = [];
 }
+
+Character.prototype.equipItem = function(item) {
+  this.inventory.push(item);
+  for (var stat in item.statModifiers) {
+    if (this.hasOwnProperty(stat)) {
+      this[stat] += item.statModifiers[stat];
+    }
+  }
+};
+
 
 function createCharacterInScript(AC, HP, SP, STR, DEX, CON, INT, WIS, CHA) {
   var newCharacter=new Character(AC, HP, SP, STR, DEX, CON, INT, WIS, CHA);
