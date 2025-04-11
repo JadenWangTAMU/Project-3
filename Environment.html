@@ -29,38 +29,67 @@
       let descriptionBox = document.getElementById("description-box");
       let picBox = document.getElementById("pic-box");
       let buttonPics = document.getElementById("button-pics");
+      let nameBox = document.getElementById("name-box");
+      let clickDescription = false;
+      let clickName = false;
       if (encounter === "Enchanted Forest") {
           descriptionBox.value = "A mystical woodland where the trees seem to whisper ancient secrets. The air is thick with magic, and strange, glowing flora light up the paths. A place of beauty and danger in equal measure.";
           picBox.src = "https://static.wixstatic.com/media/70fbf4_c1df13904ddd430589d8dd8e370ca6d9~mv2.jpeg/v1/fill/w_980,h_653,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/70fbf4_c1df13904ddd430589d8dd8e370ca6d9~mv2.jpeg";
           picBox.style="width: 200px; height: 180px;";
           buttonPics.style = "display: flex; gap: 30px;";
+          nameBox.style.display = "none";
         } else if (encounter === "Mountain Range") {
           descriptionBox.value = "Towering peaks stretch across the horizon, their snow-covered summits piercing the sky. Rugged terrain and hidden valleys make this a land of extremes, where only the most resilient can thrive.";
           picBox.src = "https://uploads.worldanvil.com/uploads/images/49081822e6414785440d24dd845e8c69.jpeg";
           picBox.style="width: 200px; height: 180px;";
           buttonPics.style = "display: flex; gap: 30px;";
+          nameBox.style.display = "none";
         } else if (encounter === "Misty Swamp") {
           descriptionBox.value = "A damp, eerie expanse where thick fog rolls over the murky waters. The ground squelches beneath your feet, and the distant croaks of unseen creatures echo through the trees. Danger lurks in every shadow.";
           picBox.src = "https://partybickering.wordpress.com/wp-content/uploads/2019/12/colrathisle.jpg";
           picBox.style="width: 200px; height: 180px;";
           buttonPics.style = "display: flex; gap: 30px;";
+          nameBox.style.display = "none";
         } else if (encounter === "Market Town") {
           descriptionBox.value = "A bustling hub of commerce, where merchants from all over the world trade goods in colorful stalls. The air is filled with the scent of fresh produce, exotic spices, and the sound of lively chatter and bargaining.";
           picBox.src = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh-yFHSD7fzzsBMnXzUhVrEsEfHHDaARhY44eNwJJvxE4pAB0gP37cYtvIoOCzhkNL6tXzMM4S33Vl3TtTE7fSsPxgIGVU4AiVGfcJZlM4f3x7_UHzdJFbpbcaTRotJ4JDAfLX9ZMxdzlQ/s1600/m2.jpg";
           picBox.style="width: 200px; height: 180px;";
           buttonPics.style = "display: flex; gap: 30px;";
+          nameBox.style.display = "none";
         } else if (encounter === "Make My Own") {
-          descriptionBox.value = "Create your own environment!";
+          descriptionBox.value = "Enter description here: ";
+          nameBox.value = "Enter name here: ";
           picBox.src = "https://upload.wikimedia.org/wikipedia/commons/5/5a/Black_question_mark.png";
           picBox.style= "width: 120px; height: 180px;";
           buttonPics.style = "display: flex; gap: 70px;";
+          descriptionBox.readOnly=false;
+          nameBox.readOnly=false;
+          descriptionBox.onclick = function(){
+            if (clickDescription == false){
+              this.value = "";
+              clickDescription = true;
+            }
+          };
+          nameBox.onclick = function(){
+            if (clickName == false){
+              this.value = "";
+              clickName = true;
+            }
+          };
+          nameBox.style.display = '';
         }
     }
     </script>
 
     <div style="margin-left:180px;">
       <textarea id="description-box" style="width: 200px; height: 165px; margin-top: 20px; text-align:left; font-size:15px; font-style:italic; resize: none;" readonly></textarea>
+      <textarea type="hidden" id="name-box" style="width: 200px; height: 35px; margin-top: 5px; text-align:left; font-size:15px; font-style:italic; resize: none; display: none;" readonly></textarea>
     </div>
+
+    <div class="submit-button" style="display: flex; justify-content:center; margin-top: 20px;">
+      <button class="button" type="submit">Submit</button>
+    </div>
+
   </body>
 </html>
 

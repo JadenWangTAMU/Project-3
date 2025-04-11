@@ -26,32 +26,38 @@
     <script>
 
     function showInfo(encounter) {
+      let titleBox = document.getElementById("title-box");
       let descriptionBox = document.getElementById("description-box");
       let statsBox = document.getElementById("stats-box");
       let picBox = document.getElementById("pic-box");
       let buttonPics = document.getElementById("button-pics");
       if (encounter === "Wizard") {
+          titleBox.value = "Wizard";
           descriptionBox.value = "An arcane spellcaster capable of fantastic tricks and limited only by their spellbook";
           picBox.src = "https://png.pngtree.com/png-clipart/20250217/original/pngtree-powerful-wizard-in-purple-robe-with-staff-png-image_19840831.png";
           picBox.style = "width: 120px; height: 180px;";
           buttonPics.style = "display: flex; gap: 70px;";
         } else if (encounter === "Bard") {
+          titleBox.value = "Bard";
           descriptionBox.value = "A sorcerer who uses song and speech to inspire allies, demoralize foes, and manipulate situations";
           picBox.src = "https://png.pngtree.com/png-clipart/20240418/original/pngtree-elf-bard-character-with-natural-twenty-dice-roll-sticker-png-image_14874513.png";
           picBox.style = "width: 120px; height: 180px;";
           buttonPics.style = "display: flex; gap: 70px;";
         } else if (encounter === "Rogue") {
+          titleBox.value = "Rogue";
           descriptionBox.value = "A versatile thief skilled in stealth, trickery, and combat, sneak attacking and outmaneuvering opponents";
           picBox.src = "https://png.pngtree.com/png-vector/20240724/ourmid/pngtree-dnd-adventurer-png-image_12861468.png";
           picBox.style = "width: 120px; height: 180px;";
           buttonPics.style = "display: flex; gap: 70px;";
         } else if (encounter === "Cleric") {
+          titleBox.value = "Cleric";
           descriptionBox.value = "A spellcaster chosen by a deity to heal, buff, and strike others with holy might";
           picBox.src = "https://www.gmbinder.com/images/T1qGDIc.png";
           picBox.style = "width: 160px; height: 180px;";
           buttonPics.style = "display: flex; gap: 50px;";
         } else if (encounter === "Custom") {
-          descriptionBox.value = "Create your own character!";
+          titleBox.value = "[Give your character a title here]";
+          descriptionBox.value = "[Give your character a description here]";
           picBox.src = "https://upload.wikimedia.org/wikipedia/commons/5/5a/Black_question_mark.png";
           picBox.style = "width: 120px; height: 180px; object-fit: cover;";
           buttonPics.style = "display: flex; gap: 70px;";
@@ -62,7 +68,13 @@
     <!--<textarea id="description-box" style="width: 50%; height: 175px; margin-top: 20px; text-align:left;" readonly></textarea>
     <textarea id="stats-box" style="width: 50%; height: 175px; margin-top: 20px; text-align:right;" readonly></textarea>-->
     <div style="display: flex; gap: 40px;">
-      <textarea id="description-box" style="width: 45%; height: 145px; margin-top: 20px; text-align:left; font-size:17px; font-style:italic; resize: none;" readonly></textarea>
+      <div style="display: flex; flex-direction: column; gap: 5px;">
+        <textarea id="title-box" style="width: 100%; height: 30px; margin-top: 10px; text-align:left; font-size:17px; font-style:italic; resize: none;">[Default Title]</textarea>
+        <textarea id="description-box" style="width: 100%; height: 145px; margin-top: 10px; text-align:left; font-size:17px; font-style:italic; resize: none;">[Default Description]</textarea>
+        <div class="block" id="save-character">
+          <button class="action" id="save-character-button" onclick="saveCharacter()">Save Character</button>
+        </div>
+      </div>
       <div id="stats-box" style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 38%; height: 180px; margin-top: 20px; font-size:15px;">
           <form style="display: flex; flex-direction: column; gap: 8px;">
             <!-- Repeat block for each stat -->

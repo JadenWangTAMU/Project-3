@@ -119,7 +119,7 @@ function showEncounter() {
   var ui = HtmlService.createTemplateFromFile('Encounter')
       .evaluate()
       .setWidth(400)
-      .setHeight(400)
+      .setHeight(460)
       .setSandboxMode(HtmlService.SandboxMode.IFRAME);
   DocumentApp.getUi().showModalDialog(ui, "Generate Encounter");
 }
@@ -127,8 +127,8 @@ function showEncounter() {
 function showEnvironment() {
   var ui = HtmlService.createTemplateFromFile('Environment')
       .evaluate()
-      .setWidth(400)
-      .setHeight(400)
+      .setWidth(410)
+      .setHeight(490)
       .setSandboxMode(HtmlService.SandboxMode.IFRAME);
   DocumentApp.getUi().showModalDialog(ui, "Generate Environment");
 }
@@ -146,7 +146,7 @@ function showInventory() {
   var ui = HtmlService.createTemplateFromFile('Inventory')
       .evaluate()
       .setWidth(400)
-      .setHeight(400)
+      .setHeight(460)
       .setSandboxMode(HtmlService.SandboxMode.IFRAME);
   DocumentApp.getUi().showModalDialog(ui, "Inventory");
 }
