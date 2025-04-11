@@ -1,0 +1,206 @@
+/**
+ * @OnlyCurrentDoc  Limits the script to only accessing the current document.
+ */
+
+// Honestly, I don't know what my thought process of making this into a class even was.
+// I think it said something about classes in the assignment somewhere and I took that to
+// heart. I can change this to just functions if I need to.
+
+/*
+ * !!! Usefull info !!!
+ * only works for character sheet
+ * 
+ * newChar(...) - creates new table for a character
+ * 
+ * getTableByName(name) - returns table index for specified character name
+ *  intended to be used to retrieve tableNum
+ * 
+ * setName(tableNum, name)/getName(tableNum) -  getter and setter for name
+ *  tableNum: index of table on doc. Starts at 0
+ *  name: new name
+ * 
+ * setClass(...)/getClass(...) - getter and setter for character class
+ *  similar to set and get name
+ * 
+ * setStats(...)/getStats(...) - getter and setter for ALL character stats
+ *  input must already be formated and a string
+ * 
+ * setStat(...)/getStat(...) - getter and setter for SPECIFIC stat
+ * 
+ * setDescription(...)/getDescription(...) - getter and setter for character description
+ * 
+ * setImage(...) - sets character image
+ *  no getter at the moment
+ * 
+ * setInventory(...)/getInventory(...) - setter and getter for ALL character inventory
+ *  input must already be formated and a string
+ * 
+ * setSpells(...)/getSpells(...) - setter and getter for ALL character spells
+ *  input must already be formated and a string
+ */
+
+function updateCharacter() {
+  this.doc = DocumentApp.getActiveDocument();
+  this.body = this.doc.getBody();
+
+  // Maybe include all character, inventory, ect variables?
+
+  // Check if document contains character
+  // NOTE: only checks character stats. Need to update if other information is included
+  this.tables = this.body.getTables();
+
+  this.nameIndex = 0;
+  this.classIndex = 1;
+  this.statIndex = 2;
+  this.descIndex = 3;
+  this.imgIndex = 4;
+  this.invIndex = 5;
+  this.spellIndex = 6;
+}
+
+updateCharacter.prototype.newCharacter = function(name, chrClass, stats, desc, image, inv, spells) {
+  tableData = [
+    ["Name", name],
+    ["Class", chrClass],
+    ["Stats", stats],
+    ["Description", desc],
+    ["Image", ""],
+    ["Inventory", inv],
+    ["Spells", spells]
+  ];
+
+  table = this.body.appendTable(tableData);
+
+  if (image != null) {
+    table.getCell(this.imgIndex, 1).appendImage(image);
+  }
+
+  this.tables.push(table);
+}
+
+updateCharacter.prototype.getTableByName = function(name) {
+  for(i = 0; i < this.tables.length; i++) {
+    try {
+      if (this.tables[i].getCell(this.nameIndex, 1).getText() == name) {
+        return i;
+      }
+    } catch(error) {
+      // Table is not formated as character sheet. Ignore
+      continue;
+    }
+  }
+
+  return -1;
+}
+
+updateCharacter.prototype.setName = function(tableNum, name) {
+  this.tables[tableNum].getCell(this.nameIndex, 1).setText(name);
+}
+
+updateCharacter.prototype.getName = function(tableNum) {
+  return this.tables[tableNum].getCell(this.nameIndex, 1);
+}
+
+updateCharacter.prototype.setClass = function(tableNum, charClass) {
+  this.tables[tableNum].getCell(this.classIndex, 1).setText(charClass);
+}
+
+updateCharacter.prototype.getClass = function(tableNum) {
+  return this.tables[tableNum].getCell(this.classIndex, 1);
+}
+
+// Set entire set of stats. Input is already formated string
+updateCharacter.prototype.setStats = function(tableNum, stats) {
+  this.tables[tableNum].getCell(this.statIndex, 1).setText(stats);
+}
+
+updateCharacter.prototype.getStats = function(tableNum) {
+  return this.tables[tableNum].getCell(this.statIndex, 1);
+}
+
+updateCharacter.prototype.setDescription = function(tableNum, descritption) {
+  this.tables[tableNum].getCell(this.descIndex, 1).setText(descritption);
+}
+
+updateCharacter.prototype.getDescription = function(tableNum) {
+  return this.tables[tableNum].getCell(this.descIndex, 1);
+}
+
+updateCharacter.prototype.setImage = function(tableNum, img) {
+  this.tables[tableNum].getCell(this.imgIndex, 1).clear().appendImage(img);
+}
+
+// I'm not entirely sure how to fetch the image from the doc
+// updateCharacter.prototype.getImage = function(tableNum) {
+//   this.tables[tableNum].getCell(this.imgIndex, 1)
+// }
+
+updateCharacter.prototype.setInventory = function(tableNum, inventory) {
+  this.tables[tableNum].getCell(this.invIndex, 1).setText(inventory);
+}
+
+updateCharacter.prototype.getInventory = function(tableNum) {
+  this.tables[tableNum].getCell(this.invIndex, 1).getText();
+}
+
+updateCharacter.prototype.setSpells = function(tableNum, spells) {
+  this.tables[tableNum].getCell(this.spellIndexIndex, 1).setText(spells);
+}
+
+updateCharacter.prototype.getSpells = function(tableNum) {
+  this.tables[tableNum].getCell(this.spellIndex, 1).getText();
+}
+
+// Sets specific stat as value. High-key some bad code, but it works
+updateCharacter.prototype.setStat = function(tableNum, stat, value) {
+  // Convert String into usable array. In format of [[STR, 1], [WIS, 1], ...]
+  oldStatsString = this.tables[tableNum].getCell(this.statIndex, 1).getText().slice(1, -1);
+  oldStatsArray = oldStatsString.split(",");
+
+  for (i = 0; i < oldStatsArray.length; i++) {
+    oldStatsArray[i] = oldStatsArray[i].split(":");
+  }
+
+  // Find and change stat value
+  // Simple brute force approach
+  for(i = 0; i < oldStatsArray.length; i++) {
+    if (oldStatsArray[i][0] == stat) {
+      oldStatsArray[i][1] = value;
+    }
+  }
+
+  // Convert to string and set cell
+  for(i = 0; i < oldStatsArray.length; i++) {
+    oldStatsArray[i] = oldStatsArray[i][0] + ":" + oldStatsArray[i][1];
+  }
+
+  newStatsString = "[" + oldStatsArray.toString() + "]";
+  this.tables[tableNum].getCell(this.statIndex, 1).setText(newStatsString);
+}
+
+updateCharacter.prototype.getStat = function(tableNum, stat) {
+  // Convert String into usable array. In format of [[STR, 1], [WIS, 1], ...]
+  oldStatsString = this.tables[tableNum].getCell(this.statIndex, 1).getText().slice(1, -1);
+  oldStatsArray = oldStatsString.split(",");
+
+  for (i = 0; i < oldStatsArray.length; i++) {
+    oldStatsArray[i] = oldStatsArray[i].split(":");
+
+    if (oldStatsArray[i][0] == stat) {
+      return oldStatsArray[i][1];
+    }
+  }
+
+  // Did not find stat
+  return -1;
+}
+
+// function test() {
+//   var testClass = new updateCharacter();
+//   //testClass.body.clear();
+//   testClass.newCharacter("Bob", "Druid", "[HP:15,STR:14,INT:3]", "A not very intelligent druid.", null, "['Wooden Staff', 'Potion']", "['Thorn Whip']");
+//   testClass.newCharacter("Not Bob", "Druid", "[HP:15,STR:14,INT:3]", "A not very intelligent druid.", null, "['Wooden Staff', 'Potion']", "['Thorn Whip']");
+
+//   console.log(testClass.getTableByName("Bob"));
+//   console.log(testClass.getTableByName("Not Bob"));
+// }

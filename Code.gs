@@ -159,3 +159,28 @@ function showProbability() {
       .setSandboxMode(HtmlService.SandboxMode.IFRAME);
   DocumentApp.getUi().showModalDialog(ui, "Generate Probability");
 }
+
+function insertCharacterToDoc(title, statsArray, description, imageUrl) {
+  const doc = DocumentApp.getActiveDocument();
+  const body = doc.getBody();
+
+  // Create the 4x2 table
+  const table = body.appendTable([
+    ['Name', title],
+    ['Stats', statsArray.join(', ')],
+    ['Description', description],
+    ['Image', ''] // We'll insert the image in this cell
+  ]);
+
+  try {
+    const response = UrlFetchApp.fetch(imageUrl);
+    const imageBlob = response.getBlob();
+    const image = table.getCell(3, 1).insertImage(0, imageBlob);
+
+    // Resize the image
+    image.setWidth(120);
+    image.setHeight(180);
+  } catch (e) {
+    table.getCell(3, 1).setText('Image failed to load.');
+  }
+}
