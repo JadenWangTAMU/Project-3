@@ -1,60 +1,74 @@
 <!DOCTYPE html>
+<!-- This document serves as the UI for the character sheet -->
+
 <html>
   <head>
     <base target="_top">
     <!-- Use a templated HTML printing scriptlet to import common stylesheet -->
     <?!= HtmlService.createHtmlOutputFromFile('Stylesheet').getContent(); ?>
-
-    <style>
-      * {
-          box-sizing: border-box;
-      }
-
-      /* Create two equal columns that floats next to each other */
-      .column {
-        float: left;
-        width: 50%;
-        height: 450px;
-        padding: 10px;
-      }
-
-      /* Clear floats after the columns */
-      .row:after {
-        content: "";
-        display: table;
-        clear: both;
-      }
-    </style>
-
   </head>
   <body>
-    <div class="row" style="background-color:#bbb;">
-      <div class="column">
-        <p>Class:</p>
-        <div id="classType" style="display: flex; flex-direction: column; align-items: center;">
-          <!-- I hate it here. Wizard button won't align???? -->
-          <button type='button'>Wizard</button>
-          <button type='button'>Bard</button>
-          <button type='button'>Rouge</button>
-          <button type='button'>Cleric</button>
-          <button type='button'>Custom</button>
-        </div>
-
+    <div id= "button-pics" style="display: flex; gap: 70px;">
+      <div class = "encounters">
+        <button class="button" onclick="showInfo('Wizard')">Wizard</button>
         <br>
-        <p>Description:</p>
-        <div id="description" style='text-align: center;'>
-          <textarea name="Text1" rows="10"></textarea>
+        <button class="button" onclick="showInfo('Bard')">Bard</button>
+        <br>
+        <button class="button" onclick="showInfo('Rogue')">Rogue</button>
+        <br>
+        <button class="button" onclick="showInfo('Cleric')">Cleric</button>
+        <br>
+        <button class="button" onclick="showInfo('Custom')">Custom</button>
+      </div>
+      <img id="pic-box" />
+    </div>
+
+    <script>
+
+    function showInfo(encounter) {
+      let descriptionBox = document.getElementById("description-box");
+      let statsBox = document.getElementById("stats-box");
+      let picBox = document.getElementById("pic-box");
+      let buttonPics = document.getElementById("button-pics");
+      if (encounter === "Wizard") {
+          descriptionBox.value = "An arcane spellcaster capable of fantastic tricks and limited only by their spellbook";
+          picBox.src = "https://png.pngtree.com/png-clipart/20250217/original/pngtree-powerful-wizard-in-purple-robe-with-staff-png-image_19840831.png";
+          picBox.style = "width: 120px; height: 180px;";
+          buttonPics.style = "display: flex; gap: 70px;";
+        } else if (encounter === "Bard") {
+          descriptionBox.value = "A sorcerer who uses song and speech to inspire allies, demoralize foes, and manipulate situations";
+          picBox.src = "https://png.pngtree.com/png-clipart/20240418/original/pngtree-elf-bard-character-with-natural-twenty-dice-roll-sticker-png-image_14874513.png";
+          picBox.style = "width: 120px; height: 180px;";
+          buttonPics.style = "display: flex; gap: 70px;";
+        } else if (encounter === "Rogue") {
+          descriptionBox.value = "A versatile thief skilled in stealth, trickery, and combat, sneak attacking and outmaneuvering opponents";
+          picBox.src = "https://png.pngtree.com/png-vector/20240724/ourmid/pngtree-dnd-adventurer-png-image_12861468.png";
+          picBox.style = "width: 120px; height: 180px;";
+          buttonPics.style = "display: flex; gap: 70px;";
+        } else if (encounter === "Cleric") {
+          descriptionBox.value = "A spellcaster chosen by a deity to heal, buff, and strike others with holy might";
+          picBox.src = "https://www.gmbinder.com/images/T1qGDIc.png";
+          picBox.style = "width: 160px; height: 180px;";
+          buttonPics.style = "display: flex; gap: 50px;";
+        } else if (encounter === "Custom") {
+          descriptionBox.value = "Create your own character!";
+          picBox.src = "https://upload.wikimedia.org/wikipedia/commons/5/5a/Black_question_mark.png";
+          picBox.style = "width: 120px; height: 180px; object-fit: cover;";
+          buttonPics.style = "display: flex; gap: 70px;";
+        }
+    }
+    </script>
+
+    <!--<textarea id="description-box" style="width: 50%; height: 175px; margin-top: 20px; text-align:left;" readonly></textarea>
+    <textarea id="stats-box" style="width: 50%; height: 175px; margin-top: 20px; text-align:right;" readonly></textarea>-->
+    <div style="display: flex; gap: 40px;">
+      <div style="display: flex; flex-direction: column; gap: 5px;">
+        <textarea id="description-box" style="width: 100%; height: 145px; margin-top: 20px; text-align:left; font-size:17px; font-style:italic; resize: none;" readonly>[Default Description]</textarea>
+        <div class="block" id="save-character">
+          <button class="action" id="save-character-button" onclick="saveCharacter()">Save Character</button>
         </div>
       </div>
-
-      <div class="column" style="background-color:#bbb;">
-        <div id="image" style='text-align: center;'>
-          <img src="https://png.pngtree.com/png-clipart/20250217/original/pngtree-powerful-wizard-in-purple-robe-with-staff-png-image_19840831.png" alt="Character Image" width=100px height=100px>
-        </div>
-
-        <br>
-
-        <div id="statistics" style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+      <div id="stats-box" style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 38%; height: 180px; margin-top: 20px; font-size:15px;">
           <form style="display: flex; flex-direction: column; gap: 8px;">
             <!-- Repeat block for each stat -->
             <div style="display: flex; align-items: center; gap: 8px;">
@@ -103,13 +117,34 @@
             </div>
           </form>
         </div>
-      </div>
-    </div>
-
-    <!-- I don't know why but this button hates me and will not change color >:^( -->
-    <div class="SetButtons" style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 10px">
-      <button type="button" style="background-color: #008CBA !important;">Save</button>
-      <button type="button">Cancel</button>
     </div>
   </body>
 </html>
+
+<style>
+.button:hover {
+  background: #656565; 
+  color: white;
+  text-align: center;
+  width: 150px;
+  height: 35px;
+}
+.button:active {
+  background: #656565; 
+  color: white;
+  text-align: center;
+  width: 150px;
+  height: 35px;
+}
+.button {
+  text-align: center;
+  width: 150px;
+  height: 35px;
+  font-size: 15px;
+}
+.stats-box {
+    border: none;
+    outline: none;
+    resize: none;
+}
+</style>

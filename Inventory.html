@@ -30,36 +30,60 @@
       let statsBox = document.getElementById("stats-box");
       let picBox = document.getElementById("pic-box");
       let buttonPics = document.getElementById("button-pics");
+      let nameBox = document.getElementById("name-box");
+      let clickDescription = false;
+      let clickName = false;
       if (encounter === "Staff") {
           descriptionBox.value = "A long stick serving as a spellcasting focus and simple weapon";
           statsBox.value = "DMG: \nCOST: \nAC: \nHP: \nCON: \nINT:";
           picBox.src = "https://cdn1.iconfinder.com/data/icons/outlined-medieval-icons-pack/200/magic_staff-512.png";
           picBox.style = "width: 120px; height: 180px;";
           buttonPics.style = "display: flex; gap: 70px;";
+          nameBox.style.display = "none";
         } else if (encounter === "Spellbook") {
           descriptionBox.value = "A leather-bound tome with blank pages for recording spells";
           statsBox.value = "DMG: \nCOST: \nAC: \nHP: \nCON: \nINT:";
           picBox.src = "https://images.vexels.com/media/users/3/211953/isolated/preview/50ab05c8327b9fabc8d617c3ab790533-magic-spell-book-hand-drawn.png";
           picBox.style = "width: 120px; height: 180px;";
           buttonPics.style = "display: flex; gap: 70px;";
+          nameBox.style.display = "none";
         } else if (encounter === "Cloak") {
           descriptionBox.value = "A magical overgarment that provides protection, illusion, and utility";
           statsBox.value = "DMG: \nCOST: \nAC: \nHP: \nCON: \nINT:";
           picBox.src = "https://cdn-icons-png.flaticon.com/512/7210/7210540.png";
           picBox.style = "width: 120px; height: 180px;";
           buttonPics.style = "display: flex; gap: 70px;";
+          nameBox.style.display = "none";
         } else if (encounter === "Healing Potion") {
           descriptionBox.value = "A potion that regains HP when drank from";
           statsBox.value = "DMG: \nCOST: \nAC: \nHP: \nCON: \nINT:";
           picBox.src = "https://d1vzi28wh99zvq.cloudfront.net/images/19127/_product_images/362795/Healing_Potion_A.png";
           picBox.style = "width: 160px; height: 180px;";
           buttonPics.style = "display: flex; gap: 50px;";
+          nameBox.style.display = "none";
         } else if (encounter === "Make My Own") {
-          descriptionBox.value = "Create your own item!";
-          statsBox.value = "DMG: \nCOST: \nAC: \nHP: \nCON: \nINT:";
+          descriptionBox.value = "Enter description here: ";
+          nameBox.value = "Enter name here: ";
+          statsBox.value = "DMG: \nCOST: \nAC: \nHP: \nCON: \nINT: ";
           picBox.src = "https://upload.wikimedia.org/wikipedia/commons/5/5a/Black_question_mark.png";
           picBox.style = "width: 120px; height: 180px; object-fit: cover;";
           buttonPics.style = "display: flex; gap: 70px;";
+          descriptionBox.readOnly=false;
+          nameBox.readOnly=false;
+          statsBox.readOnly=false;
+          descriptionBox.onclick = function(){
+            if (clickDescription == false){
+              this.value = "";
+              clickDescription = true;
+            }
+          };
+          nameBox.onclick = function(){
+            if (clickName == false){
+              this.value = "";
+              clickName = true;
+            }
+          };
+          nameBox.style.display = '';
         }
     }
     </script>
@@ -67,8 +91,15 @@
     <!--<textarea id="description-box" style="width: 50%; height: 175px; margin-top: 20px; text-align:left;" readonly></textarea>
     <textarea id="stats-box" style="width: 50%; height: 175px; margin-top: 20px; text-align:right;" readonly></textarea>-->
     <div style="display: flex; gap: 40px;">
-      <textarea id="description-box" style="width: 45%; height: 145px; margin-top: 20px; text-align:left; font-size:17px; font-style:italic; resize: none;" readonly></textarea>
+      <div class = info style="display: flex; flex-direction: column">
+        <textarea id="description-box" style="width: 95%; height: 145px; margin-top: 20px; text-align:left; font-size:17px; font-style:italic; resize: none;" readonly></textarea>
+        <textarea type="hidden" id="name-box" style="width: 95%; height: 35px; margin-top: 5px; text-align:left; font-size:17px; font-style:italic; resize: none; display:none;"" readonly></textarea>
+      </div>
       <textarea class="stats-box" id="stats-box" style="width: 38%; height: 180px; margin-top: 20px; font-size:15px;" readonly></textarea>
+    </div>
+
+    <div class="submit-button" style="display: flex; justify-content:center; margin-top: 15px;">
+      <button class="button" type="submit">Submit</button>
     </div>
   </body>
 </html>
