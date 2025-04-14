@@ -67,6 +67,8 @@
       const name = document.getElementById("name-box").value;
       const title = document.getElementById("title-box").value;
       const description = document.getElementById("description-box").value;
+      const inventory = document.getElementById("inventory-box").value;
+      const attacks = document.getElementById("attacks-box").value;
       const picSrc = document.getElementById("pic-box").src;
 
       const statInputs = document.querySelectorAll("#stats-box input");
@@ -83,7 +85,7 @@
       statsFinal+="WIS:"+stats[7]+",";
       statsFinal+="CHA:"+stats[8]+"]";
 
-      google.script.run.insertCharacterToDoc(name, title, statsFinal, description, picSrc);
+      google.script.run.insertCharacterToDoc(name, title, statsFinal, description, inventory, attacks, picSrc);
     }
     </script>
 
@@ -94,6 +96,8 @@
         <textarea id="name-box" style="width: 100%; height: 30px; margin-top: 10px; text-align:left; font-size:17px; font-style:italic; resize: none;">[Default Name]</textarea>
         <textarea id="title-box" style="width: 100%; height: 30px; margin-top: 10px; text-align:left; font-size:17px; font-style:italic; resize: none;">[Default Title]</textarea>
         <textarea id="description-box" style="width: 100%; height: 145px; margin-top: 10px; text-align:left; font-size:17px; font-style:italic; resize: none;">[Default Description]</textarea>
+        <textarea id="inventory-box" style="width: 100%; height: 30px; margin-top: 10px; text-align:left; font-size:17px; font-style:italic; resize: none;">[Default Inventory]</textarea>
+        <textarea id="attacks-box" style="width: 100%; height: 30px; margin-top: 10px; text-align:left; font-size:17px; font-style:italic; resize: none;">[Default Attacks]</textarea>
         <div class="block" id="save-character">
           <button class="action" id="save-character-button" onclick="saveCharacter()">Save Character</button>
         </div>

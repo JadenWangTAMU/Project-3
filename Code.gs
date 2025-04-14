@@ -160,7 +160,7 @@ function showProbability() {
   DocumentApp.getUi().showModalDialog(ui, "Generate Probability");
 }
 
-function insertCharacterToDoc(name, title, statsArray, description, imageUrl) {
+function insertCharacterToDoc(name, title, statsArray, description, inventory, attacks, imageUrl) {
   var testClass=new updateCharacter();
-  testClass.newCharacter(name, title, statsArray, description, imageUrl, "['Wooden Staff', 'Potion']", "['Thorn Whip']");
+  testClass.newCharacter(name, title, statsArray, description, inventory, attacks, imageUrl);
 }

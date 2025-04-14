@@ -58,7 +58,7 @@ function updateCharacter() {
   this.attackIndex = 6;
 }
 
-updateCharacter.prototype.newCharacter = function(name, chrClass, stats, desc, image, inv, attacks) {
+updateCharacter.prototype.newCharacter = function(name, chrClass, stats, desc, inv, attacks, image) {
   tableData = [
     ["Name", name],
     ["Class", chrClass],
