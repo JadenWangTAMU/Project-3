@@ -159,3 +159,8 @@ function showProbability() {
       .setSandboxMode(HtmlService.SandboxMode.IFRAME);
   DocumentApp.getUi().showModalDialog(ui, "Generate Probability");
 }
+
+function insertCharacterToDoc(name, title, statsArray, description, imageUrl) {
+  var testClass=new updateCharacter();
+  testClass.newCharacter(name, title, statsArray, description, imageUrl, "['Wooden Staff', 'Potion']", "['Thorn Whip']");
+}
