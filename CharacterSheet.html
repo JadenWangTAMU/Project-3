@@ -72,7 +72,18 @@
       const statInputs = document.querySelectorAll("#stats-box input");
       const stats = Array.from(statInputs).map(input => input.value || 0);
 
-      google.script.run.insertCharacterToDoc(name, title, stats, description, picSrc);
+      var statsFinal="";
+      statsFinal+="[AC:"+stats[0]+",";
+      statsFinal+="HP:"+stats[1]+",";
+      statsFinal+="SP:"+stats[2]+",";
+      statsFinal+="STR:"+stats[3]+",";
+      statsFinal+="DEX:"+stats[4]+",";
+      statsFinal+="CON:"+stats[5]+",";
+      statsFinal+="INT:"+stats[6]+",";
+      statsFinal+="WIS:"+stats[7]+",";
+      statsFinal+="CHA:"+stats[8]+"]";
+
+      google.script.run.insertCharacterToDoc(name, title, statsFinal, description, picSrc);
     }
     </script>
 
