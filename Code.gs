@@ -160,27 +160,27 @@ function showProbability() {
   DocumentApp.getUi().showModalDialog(ui, "Generate Probability");
 }
 
-function insertCharacterToDoc(title, statsArray, description, imageUrl) {
-  const doc = DocumentApp.getActiveDocument();
-  const body = doc.getBody();
+function insertCharacterToDoc(name, title, statsArray, description, inventory, attacks, imageUrl) {
+  var testClass=new updateCharacter();
+  testClass.newCharacter(name, title, statsArray, description, inventory, attacks, imageUrl);
+}
 
-  // Create the 4x2 table
-  const table = body.appendTable([
-    ['Name', title],
-    ['Stats', statsArray.join(', ')],
-    ['Description', description],
-    ['Image', ''] // We'll insert the image in this cell
-  ]);
+function insertInventoryToDoc(name, statsArray, description, imageUrl) {
+  var testClass=new updateInventory();
+  testClass.newInventory(name, statsArray, description, imageUrl);
+}
 
-  try {
-    const response = UrlFetchApp.fetch(imageUrl);
-    const imageBlob = response.getBlob();
-    const image = table.getCell(3, 1).insertImage(0, imageBlob);
+function insertEncounterToDoc(name, statsArray, description, imageUrl) {
+  var testClass=new updateEncounter();
+  testClass.newEncounter(name, statsArray, description, imageUrl);
+}
 
-    // Resize the image
-    image.setWidth(120);
-    image.setHeight(180);
-  } catch (e) {
-    table.getCell(3, 1).setText('Image failed to load.');
-  }
+function insertEnvironmentToDoc(name, description, imageUrl) {
+  var testClass=new updateEnvironment();
+  testClass.newEnvironment(name, description, imageUrl);
+}
+
+function insertDiceToDoc(diceNumber, lowestNumber, greatestNumber, dice, averageRoll, rollHistory) {
+  var testClass=new updateDice();
+  testClass.newDice(diceNumber, lowestNumber, greatestNumber, dice, averageRoll, rollHistory);
 }

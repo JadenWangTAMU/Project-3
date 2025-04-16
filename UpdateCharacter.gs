@@ -35,7 +35,7 @@
  * setInventory(...)/getInventory(...) - setter and getter for ALL character inventory
  *  input must already be formated and a string
  * 
- * setSpells(...)/getSpells(...) - setter and getter for ALL character spells
+ * setAttacks(...)/getAttacks(...) - setter and getter for ALL character attacks
  *  input must already be formated and a string
  */
 
@@ -55,10 +55,11 @@ function updateCharacter() {
   this.descIndex = 3;
   this.imgIndex = 4;
   this.invIndex = 5;
-  this.spellIndex = 6;
+  this.attackIndex = 6;
+  this.typeIndex = 7;
 }
 
-updateCharacter.prototype.newCharacter = function(name, chrClass, stats, desc, image, inv, spells) {
+updateCharacter.prototype.newCharacter = function(name, chrClass, stats, desc, inv, attacks, image) {
   tableData = [
     ["Name", name],
     ["Class", chrClass],
@@ -66,13 +67,22 @@ updateCharacter.prototype.newCharacter = function(name, chrClass, stats, desc, i
     ["Description", desc],
     ["Image", ""],
     ["Inventory", inv],
-    ["Spells", spells]
+    ["Attacks", attacks],
+    ["Type","Character"]
   ];
 
   table = this.body.appendTable(tableData);
 
-  if (image != null) {
-    table.getCell(this.imgIndex, 1).appendImage(image);
+  try {
+    const response = UrlFetchApp.fetch(image);
+    const imageBlob = response.getBlob();
+    const img = table.getCell(this.imgIndex, 1).insertImage(0, imageBlob);
+
+    // Resize the image
+    img.setWidth(120);
+    img.setHeight(180);
+  } catch (e) {
+    table.getCell(this.imgIndex, 1).setText('Image failed to load.');
   }
 
   this.tables.push(table);
@@ -81,6 +91,10 @@ updateCharacter.prototype.newCharacter = function(name, chrClass, stats, desc, i
 updateCharacter.prototype.getTableByName = function(name) {
   for(i = 0; i < this.tables.length; i++) {
     try {
+      if (!this.isCharacter(i)) {
+        continue;
+      }
+      
       if (this.tables[i].getCell(this.nameIndex, 1).getText() == name) {
         return i;
       }
@@ -91,6 +105,19 @@ updateCharacter.prototype.getTableByName = function(name) {
   }
 
   return -1;
+}
+
+updateCharacter.prototype.isCharacter = function(tableNum) {
+  try {
+      if (this.tables[tableNum].getCell(this.typeIndex, 1).getText() == "Character") {
+        return true;
+      }
+    } catch(error) {
+      // Table is not formated as character sheet. Ignore
+      return false;
+    }
+
+    return false;
 }
 
 updateCharacter.prototype.setName = function(tableNum, name) {
@@ -143,12 +170,12 @@ updateCharacter.prototype.getInventory = function(tableNum) {
   this.tables[tableNum].getCell(this.invIndex, 1).getText();
 }
 
-updateCharacter.prototype.setSpells = function(tableNum, spells) {
-  this.tables[tableNum].getCell(this.spellIndexIndex, 1).setText(spells);
+updateCharacter.prototype.setAttacks = function(tableNum, attacks) {
+  this.tables[tableNum].getCell(this.attackIndexIndex, 1).setText(attacks);
 }
 
-updateCharacter.prototype.getSpells = function(tableNum) {
-  this.tables[tableNum].getCell(this.spellIndex, 1).getText();
+updateCharacter.prototype.getAttacks = function(tableNum) {
+  this.tables[tableNum].getCell(this.attackIndex, 1).getText();
 }
 
 // Sets specific stat as value. High-key some bad code, but it works
