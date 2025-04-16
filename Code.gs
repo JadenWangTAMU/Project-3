@@ -164,3 +164,32 @@ function insertCharacterToDoc(name, title, statsArray, description, inventory, a
   var testClass=new updateCharacter();
   testClass.newCharacter(name, title, statsArray, description, inventory, attacks, imageUrl);
 }
+
+function insertInventoryToDoc(name, statsArray, description, imageUrl) {
+  var testClass=new updateInventory();
+  testClass.newInventory(name, statsArray, description, imageUrl);
+}
+
+function insertEncounterToDoc(name, statsArray, description, imageUrl) {
+  var testClass=new updateEncounter();
+  testClass.newEncounter(name, statsArray, description, imageUrl);
+}
+
+function insertEnvironmentToDoc(name, description, imageUrl) {
+  var testClass=new updateEnvironment();
+  testClass.newEnvironment(name, description, imageUrl);
+}
+
+function insertDiceToDoc(diceNumber, lowestNumber, greatestNumber, dice, averageRoll, rollHistory) {
+  var testClass=new updateDice();
+  testClass.newDice(diceNumber, lowestNumber, greatestNumber, dice, averageRoll, rollHistory);
+}
+
+function searchCharacterInDoc(name) {
+  var testClass=new updateCharacter();
+  var testNum=testClass.getTableByName(name);
+  console.log(testNum);
+  var stats=testClass.getStatAsArray(testNum);
+  console.log(stats);
+  return stats;
+}

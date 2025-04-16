@@ -8,23 +8,15 @@
     <?!= HtmlService.createHtmlOutputFromFile('Stylesheet').getContent(); ?>
   </head>
   <body>
-    <select id="dropdown" onchange="onDropdownChange()">
-      <option value="wizard">Wizard</option>
-      <option value="bard">Bard</option>
-      <option value="rogue">Rogue</option>
-      <option value="cleric">Cleric</option>
-    </select>
+    <textarea id="name-box" style="width: 50%; height: 30px; margin-top: 10px; text-align:left; font-size:17px; font-style:italic; resize: none;">[Default Character]</textarea>
+    <div class="block" id="save-character">
+      <button class="action" id="search-character-button" onclick="searchCharacter()">Search Character</button>
+    </div>
     <div class="block" id="visualize-stats">
       <!-- The canvas element where the chart will be rendered -->
       <canvas id="statsChart" width="400" height="400"></canvas>
     </div>
     <script>
-      // Function that creates the character and displays the stats as a chart
-      function createCharacter() {
-        google.script.run.withSuccessHandler(displayChart).createCharacterInScript(12, 9, 30, 8, 14, 15, 16, 13, 11);
-      }
-
-      // Function to display the stats in a chart
       function displayChart(result) {
         // Prepare the labels and data from the result
         const labels = ["AC", "HP", "SP", "STR", "DEX", "CON", "INT", "WIS", "CHA"];
@@ -56,8 +48,10 @@
         });
       }
 
-      // Call createCharacter function as soon as the page loads
-      window.onload = createCharacter;
+      function searchCharacter(){
+        const name = document.getElementById("name-box").value;
+        var result=google.script.run.withSuccessHandler(displayChart).searchCharacterInDoc(name);
+      }
     </script>
   </body>
 </html>

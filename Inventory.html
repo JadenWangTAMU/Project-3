@@ -26,80 +26,108 @@
     <script>
 
     function showInfo(encounter) {
+      let nameBox = document.getElementById("name-box");
       let descriptionBox = document.getElementById("description-box");
       let statsBox = document.getElementById("stats-box");
       let picBox = document.getElementById("pic-box");
       let buttonPics = document.getElementById("button-pics");
-      let nameBox = document.getElementById("name-box");
-      let clickDescription = false;
-      let clickName = false;
       if (encounter === "Staff") {
+          nameBox.value="Staff";
           descriptionBox.value = "A long stick serving as a spellcasting focus and simple weapon";
-          statsBox.value = "DMG: \nCOST: \nAC: \nHP: \nCON: \nINT:";
           picBox.src = "https://cdn1.iconfinder.com/data/icons/outlined-medieval-icons-pack/200/magic_staff-512.png";
           picBox.style = "width: 120px; height: 180px;";
           buttonPics.style = "display: flex; gap: 70px;";
-          nameBox.style.display = "none";
         } else if (encounter === "Spellbook") {
+          nameBox.value="Spellbook";
           descriptionBox.value = "A leather-bound tome with blank pages for recording spells";
-          statsBox.value = "DMG: \nCOST: \nAC: \nHP: \nCON: \nINT:";
           picBox.src = "https://images.vexels.com/media/users/3/211953/isolated/preview/50ab05c8327b9fabc8d617c3ab790533-magic-spell-book-hand-drawn.png";
           picBox.style = "width: 120px; height: 180px;";
           buttonPics.style = "display: flex; gap: 70px;";
-          nameBox.style.display = "none";
         } else if (encounter === "Cloak") {
+          nameBox.value="Cloak";
           descriptionBox.value = "A magical overgarment that provides protection, illusion, and utility";
-          statsBox.value = "DMG: \nCOST: \nAC: \nHP: \nCON: \nINT:";
           picBox.src = "https://cdn-icons-png.flaticon.com/512/7210/7210540.png";
           picBox.style = "width: 120px; height: 180px;";
           buttonPics.style = "display: flex; gap: 70px;";
-          nameBox.style.display = "none";
         } else if (encounter === "Healing Potion") {
+          nameBox.value="Healing Potion";
           descriptionBox.value = "A potion that regains HP when drank from";
-          statsBox.value = "DMG: \nCOST: \nAC: \nHP: \nCON: \nINT:";
           picBox.src = "https://d1vzi28wh99zvq.cloudfront.net/images/19127/_product_images/362795/Healing_Potion_A.png";
           picBox.style = "width: 160px; height: 180px;";
           buttonPics.style = "display: flex; gap: 50px;";
-          nameBox.style.display = "none";
         } else if (encounter === "Make My Own") {
-          descriptionBox.value = "Enter description here: ";
-          nameBox.value = "Enter name here: ";
-          statsBox.value = "DMG: \nCOST: \nAC: \nHP: \nCON: \nINT: ";
+          nameBox.value="[Give your item a name here]";
+          descriptionBox.value = "[Give your item a description here]";
           picBox.src = "https://upload.wikimedia.org/wikipedia/commons/5/5a/Black_question_mark.png";
           picBox.style = "width: 120px; height: 180px; object-fit: cover;";
           buttonPics.style = "display: flex; gap: 70px;";
-          descriptionBox.readOnly=false;
-          nameBox.readOnly=false;
-          statsBox.readOnly=false;
-          descriptionBox.onclick = function(){
-            if (clickDescription == false){
-              this.value = "";
-              clickDescription = true;
-            }
-          };
-          nameBox.onclick = function(){
-            if (clickName == false){
-              this.value = "";
-              clickName = true;
-            }
-          };
-          nameBox.style.display = '';
         }
+    }
+
+    function saveInventory() {
+      const name = document.getElementById("name-box").value;
+      const description = document.getElementById("description-box").value;
+      const picSrc = document.getElementById("pic-box").src;
+
+      const statInputs = document.querySelectorAll("#stats-box input");
+      const stats = Array.from(statInputs).map(input => input.value || 0);
+
+      var statsFinal="";
+      statsFinal+="[DMG:"+stats[0]+",";
+      statsFinal+="COST:"+stats[1]+",";
+      statsFinal+="AC:"+stats[2]+",";
+      statsFinal+="HP:"+stats[3]+",";
+      statsFinal+="CON:"+stats[4]+",";
+      statsFinal+="INT:"+stats[5]+"]";
+
+      google.script.run.insertInventoryToDoc(name, statsFinal, description, picSrc);
     }
     </script>
 
     <!--<textarea id="description-box" style="width: 50%; height: 175px; margin-top: 20px; text-align:left;" readonly></textarea>
     <textarea id="stats-box" style="width: 50%; height: 175px; margin-top: 20px; text-align:right;" readonly></textarea>-->
     <div style="display: flex; gap: 40px;">
-      <div class = info style="display: flex; flex-direction: column">
-        <textarea id="description-box" style="width: 95%; height: 145px; margin-top: 20px; text-align:left; font-size:17px; font-style:italic; resize: none;" readonly></textarea>
-        <textarea type="hidden" id="name-box" style="width: 95%; height: 35px; margin-top: 5px; text-align:left; font-size:17px; font-style:italic; resize: none; display:none;"" readonly></textarea>
+      <div style="display: flex; flex-direction: column; gap: 5px;">
+        <textarea id="name-box" style="width: 100%; height: 30px; margin-top: 10px; text-align:left; font-size:17px; font-style:italic; resize: none;">[Default Name]</textarea>
+        <textarea id="description-box" style="width: 100%; height: 145px; margin-top: 20px; text-align:left; font-size:17px; font-style:italic; resize: none;" readonly>[Default Description]</textarea>
+        <div class="block" id="save-inventory">
+            <button class="action" id="save-inventory-button" onclick="saveInventory()">Save Inventory</button>
+        </div>
       </div>
-      <textarea class="stats-box" id="stats-box" style="width: 38%; height: 180px; margin-top: 20px; font-size:15px;" readonly></textarea>
-    </div>
+      <div id="stats-box" style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 38%; height: 180px; margin-top: 20px; font-size:15px;">
+          <form style="display: flex; flex-direction: column; gap: 8px;">
+            <!-- Repeat block for each stat -->
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label for="DMG" style="width: 40px; text-align: left;">DMG:</label>
+              <input type="number" id="DMG" name="DMG" style="width: 100px; text-align: center;">
+            </div>
 
-    <div class="submit-button" style="display: flex; justify-content:center; margin-top: 15px;">
-      <button class="button" type="submit">Submit</button>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label for="COST" style="width: 40px; text-align: left;">COST:</label>
+              <input type="number" id="COST" name="COST" style="width: 100px; text-align: center;">
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label for="AC" style="width: 40px; text-align: left;">AC:</label>
+              <input type="number" id="AC" name="AC" style="width: 100px; text-align: center;">
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label for="HP" style="width: 40px; text-align: left;">HP:</label>
+              <input type="number" id="HP" name="HP" style="width: 100px; text-align: center;">
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label for="CON" style="width: 40px; text-align: left;">CON:</label>
+              <input type="number" id="CON" name="CON" style="width: 100px; text-align: center;">
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label for="INT" style="width: 40px; text-align: left;">INT:</label>
+              <input type="number" id="INT" name="INT" style="width: 100px; text-align: center;">
+            </div>
+          </form>
+      </div>
     </div>
   </body>
 </html>

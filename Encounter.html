@@ -35,32 +35,32 @@
       let clickName = false;
       if (encounter === "Orc") {
           descriptionBox.value = "A fearsome creature known for its strength and aggression.";
-          statsBox.value = "AC: \nHP: \nSP: \nSTR: \nDEX: \nCON: \nINT: \nWIS: \nCHA:";
           picBox.src = "https://www.dndbeyond.com/avatars/thumbnails/30834/160/1000/1000/638063882785865067.png";
           picBox.style = "width: 120px; height: 180px;";
           buttonPics.style = "display: flex; gap: 70px;";
           nameBox.style.display = "none";
+          nameBox.value = "Orc";
         } else if (encounter === "Goblin") {
           descriptionBox.value = "A small, mischievous creature often found in caves or forests.";
-          statsBox.value = "AC: \nHP: \nSP: \nSTR: \nDEX: \nCON: \nINT: \nWIS: \nCHA:";
           picBox.src = "https://www.dndbeyond.com/avatars/thumbnails/30783/955/1000/1000/638062024584880857.png";
           picBox.style = "width: 120px; height: 180px;";
           buttonPics.style = "display: flex; gap: 70px;";
           nameBox.style.display = "none";
+          nameBox.value = "Goblin";
         } else if (encounter === "Kobold") {
           descriptionBox.value = "A reptilian humanoid known for its cunning traps and traps.";
-          statsBox.value = "AC: \nHP: \nSP: \nSTR: \nDEX: \nCON: \nINT: \nWIS: \nCHA:";
           picBox.src = "https://www.dndbeyond.com/avatars/thumbnails/30832/207/1000/1000/638063832924455756.png";
           picBox.style = "width: 120px; height: 180px;";
           buttonPics.style = "display: flex; gap: 70px;";
           nameBox.style.display = "none";
+          nameBox.value = "Kobold";
         } else if (encounter === "Dragon") {
           descriptionBox.value = "A massive, winged creature capable of breathing fire.";
-          statsBox.value = "AC: \nHP: \nSP: \nSTR: \nDEX: \nCON: \nINT: \nWIS: \nCHA:";
           picBox.src = "https://d1vzi28wh99zvq.cloudfront.net/images/8957/_product_images/296647/EB_lyrauroth_004.png";
           picBox.style = "width: 160px; height: 180px;";
           buttonPics.style = "display: flex; gap: 50px;";
           nameBox.style.display = "none";
+          nameBox.value = "Dragon";
         } else if (encounter === "Make My Own") {
           descriptionBox.value = "Enter description here: ";
           nameBox.value = "Enter name here: ";
@@ -86,20 +86,92 @@
           nameBox.style.display = '';
         }
     }
+
+    function saveEncounter() {
+      const name = document.getElementById("name-box").value;
+      const description = document.getElementById("description-box").value;
+      const picSrc = document.getElementById("pic-box").src;
+
+      const statInputs = document.querySelectorAll("#stats-box input");
+      const stats = Array.from(statInputs).map(input => input.value || 0);
+
+      var statsFinal="";
+      statsFinal+="[AC:"+stats[0]+",";
+      statsFinal+="HP:"+stats[1]+",";
+      statsFinal+="SP:"+stats[2]+",";
+      statsFinal+="STR:"+stats[3]+",";
+      statsFinal+="DEX:"+stats[4]+",";
+      statsFinal+="CON:"+stats[5]+",";
+      statsFinal+="INT:"+stats[6]+",";
+      statsFinal+="WIS:"+stats[7]+",";
+      statsFinal+="CHA:"+stats[8]+"]";
+
+      google.script.run.insertEncounterToDoc(name, statsFinal, description, picSrc);
+    }
     </script>
 
     <!--<textarea id="description-box" style="width: 50%; height: 175px; margin-top: 20px; text-align:left;" readonly></textarea>
     <textarea id="stats-box" style="width: 50%; height: 175px; margin-top: 20px; text-align:right;" readonly></textarea>-->
     <div style="display: flex; gap: 40px;">
-      <div class = info style="display: flex; flex-direction: column">
-        <textarea id="description-box" style="width: 95%; height: 145px; margin-top: 20px; text-align:left; font-size:17px; font-style:italic; resize: none;" readonly></textarea>
-        <textarea type="hidden" id="name-box" style="width: 95%; height: 35px; margin-top: 5px; text-align:left; font-size:17px; font-style:italic; resize: none; display:none;"" readonly></textarea>
+      <div style="display: flex; flex-direction: column; gap: 5px;">
+        <div class = info style="display: flex; flex-direction: column">
+          <textarea id="description-box" style="width: 95%; height: 145px; margin-top: 20px; text-align:left; font-size:17px; font-style:italic; resize: none;"></textarea>
+          <textarea type="hidden" id="name-box" style="width: 95%; height: 35px; margin-top: 5px; text-align:left; font-size:17px; font-style:italic; resize: none; display:none;""></textarea>
+        </div>
       </div>
-      <textarea class="stats-box" id="stats-box" style="width: 38%; height: 180px; margin-top: 20px; font-size:15px;" readonly></textarea>
+      <div id="stats-box" style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 38%; height: 180px; margin-top: 20px; font-size:15px;">
+          <form style="display: flex; flex-direction: column; gap: 8px;">
+            <!-- Repeat block for each stat -->
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label for="AC" style="width: 40px; text-align: left;">AC:</label>
+              <input type="number" id="AC" name="AC" style="width: 100px; text-align: center;">
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label for="HP" style="width: 40px; text-align: left;">HP:</label>
+              <input type="number" id="HP" name="HP" style="width: 100px; text-align: center;">
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label for="SP" style="width: 40px; text-align: left;">SP:</label>
+              <input type="number" id="SP" name="SP" style="width: 100px; text-align: center;">
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label for="STR" style="width: 40px; text-align: left;">STR:</label>
+              <input type="number" id="STR" name="STR" style="width: 100px; text-align: center;">
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label for="DEX" style="width: 40px; text-align: left;">DEX:</label>
+              <input type="number" id="DEX" name="DEX" style="width: 100px; text-align: center;">
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label for="CON" style="width: 40px; text-align: left;">CON:</label>
+              <input type="number" id="CON" name="CON" style="width: 100px; text-align: center;">
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label for="INT" style="width: 40px; text-align: left;">INT:</label>
+              <input type="number" id="INT" name="INT" style="width: 100px; text-align: center;">
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label for="WIS" style="width: 40px; text-align: left;">WIS:</label>
+              <input type="number" id="WIS" name="WIS" style="width: 100px; text-align: center;">
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label for="CHA" style="width: 40px; text-align: left;">CHA:</label>
+              <input type="number" id="CHA" name="CHA" style="width: 100px; text-align: center;">
+            </div>
+          </form>
+      </div>
     </div>
 
-    <div class="submit-button" style="display: flex; justify-content:center; margin-top: 15px;">
-      <button class="button" type="submit">Submit</button>
+    <div class="submit-button" style="display: flex; justify-content:left; margin-top: 15px;">
+      <button class="button" type="submit" onClick="saveEncounter()">Submit</button>
     </div>
   </body>
 </html>

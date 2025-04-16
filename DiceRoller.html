@@ -28,8 +28,6 @@
       <form>
         <label for="DiceNumber"># of Dice:</label><br>
         <input type="text" id="DiceNumber" name="DiceNumber"><br>
-        <label for="SideNumber"># of Sides:</label><br>
-        <input type="text" id="SideNumber" name="SideNumber"><br>
         <label for="LowestNumber">Lowest #:</label><br>
         <input type="text" id="LowestNumber" name="LowestNumber"><br>
         <label for="GreatestNumber">Greatest #:</label><br>
@@ -44,11 +42,19 @@
       <button class="action" id="roll-dice-button" onclick="rollDice()">Roll</button>
     </div>
 
-    <h3 id="Dice">Result: ?</h3>
+    <div class="block" id="add-to-doc">
+      <!-- Button to trigger dice roll -->
+      <button class="action" id="add-to-doc-button" onclick="addToDoc()">Add To Doc</button>
+    </div>
 
-    <h3 id="AverageRoll">Average Roll: N/A</h3>
+    <h3>Result:</h3>
+    <p id="Dice">?</p>
 
-    <h3 id="RollHistory">Roll History: No rolls yet</h3>
+    <h3>Average Roll:</h3>
+    <p id="AverageRoll">N/A</p>
+
+    <h3>Roll History:</h3>
+    <p id="RollHistory">No rolls yet</p>
 
     <!-- Client-side JavaScript -->
     <script>
@@ -59,37 +65,50 @@
       // Function to handle the dice roll logic
       function rollDice() {
         var diceNumber = parseInt(document.getElementById('DiceNumber').value);
-        var sideNumber = parseInt(document.getElementById('SideNumber').value);
         var lowestNumber = parseInt(document.getElementById('LowestNumber').value);
         var greatestNumber = parseInt(document.getElementById('GreatestNumber').value);
 
         // Validate the inputs
-        if (isNaN(diceNumber) || isNaN(sideNumber) || isNaN(lowestNumber) || isNaN(greatestNumber)) {
+        if (isNaN(diceNumber) || isNaN(lowestNumber) || isNaN(greatestNumber)) {
           alert("Please enter valid numbers.");
           return;
         }
 
-        // Call the Apps Script function to roll the dice on the server-side
-        google.script.run.withSuccessHandler(displayResult).rollDice(diceNumber, sideNumber, lowestNumber, greatestNumber);
-      }
+        var results = [];
 
-      // Function to display the results in the 'Dice' paragraph
-      function displayResult(result) {
+        // Roll each die
+        for (var i = 0; i < diceNumber; i++) {
+          // Roll a die (random value between lowestNumber and greatestNumber)
+          var rollResult = Math.floor(Math.random() * (greatestNumber - lowestNumber + 1)) + lowestNumber;
+          results.push(rollResult);
+        }
+
         // Calculate the sum of the rolls
-        var sum = result.reduce(function (a, b) { return a + b; }, 0);
+        var sum = results.reduce(function (a, b) { return a + b; }, 0);
 
         totalSum += sum;
-        totalRolls += result.length;
+        totalRolls += results.length;
 
         var average = totalSum / totalRolls;
 
-        rolls.push(result);
+        rolls.push(results);
 
-        document.getElementById('Dice').textContent = "Result: " + result.join(", ");
+        document.getElementById('Dice').textContent = results.join(",");
 
-        document.getElementById('AverageRoll').textContent = "Average Roll: " + average.toFixed(2);
+        document.getElementById('AverageRoll').textContent = average.toFixed(2);
 
-        document.getElementById('RollHistory').textContent = "Roll History: " + rolls.join("; ");
+        document.getElementById('RollHistory').textContent = rolls.join(",");
+      }
+
+      function addToDoc() {
+        var diceNumber = document.getElementById('DiceNumber').value;
+        var lowestNumber = document.getElementById('LowestNumber').value;
+        var greatestNumber = document.getElementById('GreatestNumber').value;
+        var dice = document.getElementById('Dice').textContent;
+        var averageRoll = document.getElementById('AverageRoll').textContent;
+        var rollHistory = document.getElementById('RollHistory').textContent;
+
+        google.script.run.insertDiceToDoc(diceNumber, lowestNumber, greatestNumber, dice, averageRoll, rollHistory);
       }
     </script>
   </body>

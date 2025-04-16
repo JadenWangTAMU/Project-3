@@ -56,6 +56,7 @@ function updateCharacter() {
   this.imgIndex = 4;
   this.invIndex = 5;
   this.attackIndex = 6;
+  this.typeIndex = 7;
 }
 
 updateCharacter.prototype.newCharacter = function(name, chrClass, stats, desc, inv, attacks, image) {
@@ -66,7 +67,8 @@ updateCharacter.prototype.newCharacter = function(name, chrClass, stats, desc, i
     ["Description", desc],
     ["Image", ""],
     ["Inventory", inv],
-    ["Attacks", attacks]
+    ["Attacks", attacks],
+    ["Type","Character"]
   ];
 
   table = this.body.appendTable(tableData);
@@ -89,6 +91,10 @@ updateCharacter.prototype.newCharacter = function(name, chrClass, stats, desc, i
 updateCharacter.prototype.getTableByName = function(name) {
   for(i = 0; i < this.tables.length; i++) {
     try {
+      if (!this.isCharacter(i)) {
+        continue;
+      }
+      
       if (this.tables[i].getCell(this.nameIndex, 1).getText() == name) {
         return i;
       }
@@ -99,6 +105,19 @@ updateCharacter.prototype.getTableByName = function(name) {
   }
 
   return -1;
+}
+
+updateCharacter.prototype.isCharacter = function(tableNum) {
+  try {
+      if (this.tables[tableNum].getCell(this.typeIndex, 1).getText() == "Character") {
+        return true;
+      }
+    } catch(error) {
+      // Table is not formated as character sheet. Ignore
+      return false;
+    }
+
+    return false;
 }
 
 updateCharacter.prototype.setName = function(tableNum, name) {
@@ -203,12 +222,24 @@ updateCharacter.prototype.getStat = function(tableNum, stat) {
   return -1;
 }
 
-// function test() {
-//   var testClass = new updateCharacter();
-//   //testClass.body.clear();
-//   testClass.newCharacter("Bob", "Druid", "[HP:15,STR:14,INT:3]", "A not very intelligent druid.", null, "['Wooden Staff', 'Potion']", "['Thorn Whip']");
-//   testClass.newCharacter("Not Bob", "Druid", "[HP:15,STR:14,INT:3]", "A not very intelligent druid.", null, "['Wooden Staff', 'Potion']", "['Thorn Whip']");
+updateCharacter.prototype.getStatAsArray = function(tableNum) {
+  oldStatsString = this.tables[tableNum].getCell(this.statIndex, 1).getText().slice(1, -1);
+  oldStatsArray = oldStatsString.split(",");
 
-//   console.log(testClass.getTableByName("Bob"));
-//   console.log(testClass.getTableByName("Not Bob"));
-// }
+  newStatsArray=[];
+  for (i = 0; i < oldStatsArray.length; i++) {
+    oldStatsArray[i] = oldStatsArray[i].split(":");
+    newStatsArray[i]=oldStatsArray[i][1];
+  }
+
+  return newStatsArray;
+}
+
+
+function test() {
+  var testClass = new updateCharacter();
+  //testClass.body.clear();
+  //testClass.newCharacter("bob", "test", "[AC:10,HP:3,SP:0,STR:0,DEX:0,CON:0,INT:0,WIS:0,CHA:0]", "this is a test", "[test]", "[test]", null);
+  console.log(testClass.getStat(testClass.getTableByName("bob"), "AC"));
+
+}
