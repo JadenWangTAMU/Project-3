@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <?!= HtmlService.createHtmlOutputFromFile('Stylesheet').getContent(); ?>
+    <base target="_top">
+
+    <script>
+      function exportFile() {
+        const tableIdentifier = document.getElementById('id-box').value;
+        const fileName = document.getElementById('name-box').value;
+        const tableIndex = google.script.run.findTable(tableIdentifier);
+
+        google.script.run
+          .withSuccessHandler(function(tableIndex) {
+            google.script.run.ExportTable(tableIndex, fileName);
+          })
+          .findTable(tableIdentifier);
+      }
+
+      function exportAllFiles() {
+        const fileName = document.getElementById('id-box-all').value;
+        google.script.run.ExportAllTables(fileName);
+      }
+    </script>
+
+  </head>
+  <body>
+    <div id="export-one-table" style="text-align: center; margin-top: 20px;">
+      <label for="id-box" style="font-size:17px;">Export</label>
+      <textarea id="id-box" style="width: 40%; height: 30px; margin-top: 10px; text-align:left; font-size:17px; resize: none;">Identifier</textarea>
+
+      <label for="name-box" style="font-size:17px;">as</label>
+      <textarea id="name-box" style="width: 40%; height: 30px; margin-top: 10px; text-align:left; font-size:17px; resize: none;">Filename</textarea>
+
+      <div id="export-table" style="margin-top: 20px;">
+        <button class="action" id="export-table-button" onclick="exportFile()">Export Table</button>
+      </div>
+    </div>
+    <br><hr>
+    <div id="export-all-tables" style="text-align: center; margin-top: 20px;">
+      <label for="id-box-all" style="font-size:17px;">Export all tables as</label>
+      <textarea id="id-box-all" style="width: 40%; height: 30px; margin-top: 10px; text-align:left; font-size:17px; resize: none;">Filename</textarea>
+
+      <div id="export-tables" style="margin-top: 20px;">
+        <button class="action" id="export-tables-button" onclick="exportAllFiles()">Export All</button>
+      </div>
+    </div>
+  </body>
+</html>

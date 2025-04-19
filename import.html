@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <?!= HtmlService.createHtmlOutputFromFile('Stylesheet').getContent(); ?>
+
+    <base target="_top">
+    <script>
+      function fetchFile() {
+        const fileName = document.getElementById('fileName').value;
+        google.script.run.getFileContent(fileName);
+      }
+    </script>
+  </head>
+  <body>
+    <label for="fileName">Enter File Name:</label><br>
+    <input type="text" id="fileName" style="width: 100%;"><br><br>
+    <button onclick="fetchFile()">Import</button>
+  </body>
+</html>

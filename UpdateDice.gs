@@ -9,6 +9,7 @@ function updateDice() {
   this.diceIndex = 3;
   this.averageRollIndex = 4;
   this.rollHistoryIndex = 5;
+  this.typeIndex = 6;
 }
 
 updateDice.prototype.newDice = function(diceNumber, lowestNumber, greatestNumber, dice, averageRoll, rollHistory) {
@@ -18,7 +19,8 @@ updateDice.prototype.newDice = function(diceNumber, lowestNumber, greatestNumber
     ["Greatest Number", greatestNumber],
     ["Last Roll", "["+dice+"]"],
     ["Average Roll", "["+averageRoll+"]"],
-    ["Roll History", "["+rollHistory+"]"]
+    ["Roll History", "["+rollHistory+"]"],
+    ["Type", "Dice"]
   ];
 
   table = this.body.appendTable(tableData);
@@ -27,8 +29,12 @@ updateDice.prototype.newDice = function(diceNumber, lowestNumber, greatestNumber
 }
 
 updateDice.prototype.getTableByRollHistory = function(rollHistory) {
-  for(i = 0; i < this.tables.length; i++) {
+  for(var i = 0; i < this.tables.length; i++) {
     try {
+      if (!this.isDice(i)) {
+        continue;
+      }
+
       if (this.tables[i].getCell(this.rollHistoryIndex, 1).getText() == rollHistory) {
         return i;
       }
@@ -38,6 +44,19 @@ updateDice.prototype.getTableByRollHistory = function(rollHistory) {
   }
 
   return -1;
+}
+
+updateDice.prototype.isDice = function(tableNum) {
+  try {
+      if (this.tables[tableNum].getCell(this.typeIndex, 1).getText() == "Dice") {
+        return true;
+      }
+    } catch(error) {
+      // Table is not formated as character sheet. Ignore
+      return false;
+    }
+
+    return false;
 }
 
 updateDice.prototype.setDiceNumber = function(tableNum, diceNumber) {

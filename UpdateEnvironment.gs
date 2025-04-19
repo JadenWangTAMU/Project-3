@@ -6,13 +6,15 @@ function updateEnvironment() {
   this.nameIndex = 0;
   this.descIndex = 1;
   this.imgIndex = 2;
+  this.typeIndex = 3;
 }
 
 updateEnvironment.prototype.newEnvironment = function(name, desc, image) {
   tableData = [
     ["Name", name],
     ["Description", desc],
-    ["Image", ""]
+    ["Image", ""],
+    ["Type", "Environment"]
   ];
 
   table = this.body.appendTable(tableData);
@@ -21,6 +23,7 @@ updateEnvironment.prototype.newEnvironment = function(name, desc, image) {
     const response = UrlFetchApp.fetch(image);
     const imageBlob = response.getBlob();
     const img = table.getCell(this.imgIndex, 1).insertImage(0, imageBlob);
+    img.setLinkUrl(image);
 
     // Resize the image
     img.setWidth(120);
@@ -33,8 +36,12 @@ updateEnvironment.prototype.newEnvironment = function(name, desc, image) {
 }
 
 updateEnvironment.prototype.getTableByName = function(name) {
-  for(i = 0; i < this.tables.length; i++) {
+  for(var i = 0; i < this.tables.length; i++) {
     try {
+      if (!this.isEnvironment(i)) {
+        continue;
+      }
+
       if (this.tables[i].getCell(this.nameIndex, 1).getText() == name) {
         return i;
       }
@@ -44,6 +51,19 @@ updateEnvironment.prototype.getTableByName = function(name) {
   }
 
   return -1;
+}
+
+updateEnvironment.prototype.isEnvironment = function(tableNum) {
+  try {
+      if (this.tables[tableNum].getCell(this.typeIndex, 1).getText() == "Environment") {
+        return true;
+      }
+    } catch(error) {
+      // Table is not formated as character sheet. Ignore
+      return false;
+    }
+
+    return false;
 }
 
 updateEnvironment.prototype.setName = function(tableNum, name) {

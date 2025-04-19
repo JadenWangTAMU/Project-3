@@ -18,6 +18,8 @@ function onOpen(e) {
       .addItem('Visualize Stats', 'showVisualizeStats')
       .addItem('Show Inventory', 'showInventory')
       .addItem('Show Probability', 'showProbability')
+      .addItem('Import File', 'showImport')
+      .addItem('Export File', 'showExport')
       .addToUi();
 }
 
@@ -160,9 +162,27 @@ function showProbability() {
   DocumentApp.getUi().showModalDialog(ui, "Generate Probability");
 }
 
+function showImport() {
+  var ui = HtmlService.createTemplateFromFile('import')
+      .evaluate()
+      .setWidth(300)
+      .setHeight(300)
+      .setSandboxMode(HtmlService.SandboxMode.IFRAME);
+  DocumentApp.getUi().showModalDialog(ui, "Import File From Drive");
+}
+
+function showExport() {
+  var ui = HtmlService.createTemplateFromFile('export')
+      .evaluate()
+      .setWidth(550)
+      .setHeight(300)
+      .setSandboxMode(HtmlService.SandboxMode.IFRAME);
+  DocumentApp.getUi().showModalDialog(ui, "Export File to Drive");
+}
+
 function insertCharacterToDoc(name, title, statsArray, description, inventory, attacks, imageUrl) {
   var testClass=new updateCharacter();
-  testClass.newCharacter(name, title, statsArray, description, inventory, attacks, imageUrl);
+  testClass.newCharacter(name, title, statsArray, description, imageUrl, inventory, attacks);
 }
 
 function insertInventoryToDoc(name, statsArray, description, imageUrl) {
@@ -188,8 +208,24 @@ function insertDiceToDoc(diceNumber, lowestNumber, greatestNumber, dice, average
 function searchCharacterInDoc(name) {
   var testClass=new updateCharacter();
   var testNum=testClass.getTableByName(name);
+  console.log(name);
   console.log(testNum);
   var stats=testClass.getStatAsArray(testNum);
   console.log(stats);
   return stats;
+}
+
+function searchEncounterInDoc(name) {
+  var testClass=new updateEncounter();
+  var testNum=testClass.getTableByName(name);
+  console.log(testNum);
+  var stats=testClass.getStatAsArray(testNum);
+  console.log(stats);
+  return stats;
+}
+
+function test3() {
+  searchCharacterInDoc("Ben");
+  searchCharacterInDoc("Tom");
+  searchCharacterInDoc("Bob");
 }

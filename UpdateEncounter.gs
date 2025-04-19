@@ -7,6 +7,7 @@ function updateEncounter() {
   this.statIndex = 1;
   this.descIndex = 2;
   this.imgIndex = 3;
+  this.typeIndex = 4;
 }
 
 updateEncounter.prototype.newEncounter = function(name, stats, desc, image) {
@@ -14,7 +15,8 @@ updateEncounter.prototype.newEncounter = function(name, stats, desc, image) {
     ["Name", name],
     ["Stats", stats],
     ["Description", desc],
-    ["Image", ""]
+    ["Image", ""],
+    ["Type", "Encounter"]
   ];
 
   table = this.body.appendTable(tableData);
@@ -23,6 +25,7 @@ updateEncounter.prototype.newEncounter = function(name, stats, desc, image) {
     const response = UrlFetchApp.fetch(image);
     const imageBlob = response.getBlob();
     const img = table.getCell(this.imgIndex, 1).insertImage(0, imageBlob);
+    img.setLinkUrl(image);
 
     // Resize the image
     img.setWidth(120);
@@ -35,8 +38,12 @@ updateEncounter.prototype.newEncounter = function(name, stats, desc, image) {
 }
 
 updateEncounter.prototype.getTableByName = function(name) {
-  for(i = 0; i < this.tables.length; i++) {
+  for(var i = 0; i < this.tables.length; i++) {
     try {
+      if (!this.isEncounter(i)) {
+        continue;
+      }
+
       if (this.tables[i].getCell(this.nameIndex, 1).getText() == name) {
         return i;
       }
@@ -46,6 +53,19 @@ updateEncounter.prototype.getTableByName = function(name) {
   }
 
   return -1;
+}
+
+updateEncounter.prototype.isEncounter = function(tableNum) {
+  try {
+      if (this.tables[tableNum].getCell(this.typeIndex, 1).getText() == "Encounter") {
+        return true;
+      }
+    } catch(error) {
+      // Table is not formated as character sheet. Ignore
+      return false;
+    }
+
+    return false;
 }
 
 updateEncounter.prototype.setName = function(tableNum, name) {
@@ -83,20 +103,20 @@ updateEncounter.prototype.setStat = function(tableNum, stat, value) {
   oldStatsString = this.tables[tableNum].getCell(this.statIndex, 1).getText().slice(1, -1);
   oldStatsArray = oldStatsString.split(",");
 
-  for (i = 0; i < oldStatsArray.length; i++) {
+  for (var i = 0; i < oldStatsArray.length; i++) {
     oldStatsArray[i] = oldStatsArray[i].split(":");
   }
 
   // Find and change stat value
   // Simple brute force approach
-  for(i = 0; i < oldStatsArray.length; i++) {
+  for(var i = 0; i < oldStatsArray.length; i++) {
     if (oldStatsArray[i][0] == stat) {
       oldStatsArray[i][1] = value;
     }
   }
 
   // Convert to string and set cell
-  for(i = 0; i < oldStatsArray.length; i++) {
+  for(var i = 0; i < oldStatsArray.length; i++) {
     oldStatsArray[i] = oldStatsArray[i][0] + ":" + oldStatsArray[i][1];
   }
 
@@ -109,7 +129,7 @@ updateEncounter.prototype.getStat = function(tableNum, stat) {
   oldStatsString = this.tables[tableNum].getCell(this.statIndex, 1).getText().slice(1, -1);
   oldStatsArray = oldStatsString.split(",");
 
-  for (i = 0; i < oldStatsArray.length; i++) {
+  for (var i = 0; i < oldStatsArray.length; i++) {
     oldStatsArray[i] = oldStatsArray[i].split(":");
 
     if (oldStatsArray[i][0] == stat) {
@@ -119,4 +139,17 @@ updateEncounter.prototype.getStat = function(tableNum, stat) {
 
   // Did not find stat
   return -1;
+}
+
+updateEncounter.prototype.getStatAsArray = function(tableNum) {
+  oldStatsString = this.tables[tableNum].getCell(this.statIndex, 1).getText().slice(1, -1);
+  oldStatsArray = oldStatsString.split(",");
+
+  newStatsArray=[];
+  for (var i = 0; i < oldStatsArray.length; i++) {
+    oldStatsArray[i] = oldStatsArray[i].split(":");
+    newStatsArray[i]=oldStatsArray[i][1];
+  }
+
+  return newStatsArray;
 }

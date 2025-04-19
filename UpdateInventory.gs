@@ -7,6 +7,7 @@ function updateInventory() {
   this.statIndex = 1;
   this.descIndex = 2;
   this.imgIndex = 3;
+  this.typeIndex = 4;
 }
 
 updateInventory.prototype.newInventory = function(name, stats, desc, image) {
@@ -14,7 +15,8 @@ updateInventory.prototype.newInventory = function(name, stats, desc, image) {
     ["Name", name],
     ["Stats", stats],
     ["Description", desc],
-    ["Image", ""]
+    ["Image", ""],
+    ["Type", "Inventory"]
   ];
 
   table = this.body.appendTable(tableData);
@@ -23,6 +25,7 @@ updateInventory.prototype.newInventory = function(name, stats, desc, image) {
     const response = UrlFetchApp.fetch(image);
     const imageBlob = response.getBlob();
     const img = table.getCell(this.imgIndex, 1).insertImage(0, imageBlob);
+    img.setLinkUrl(image);
 
     // Resize the image
     img.setWidth(120);
@@ -35,8 +38,12 @@ updateInventory.prototype.newInventory = function(name, stats, desc, image) {
 }
 
 updateInventory.prototype.getTableByName = function(name) {
-  for(i = 0; i < this.tables.length; i++) {
+  for(var i = 0; i < this.tables.length; i++) {
     try {
+      if(!this.isInventory(i)) {
+        continue;
+      }
+
       if (this.tables[i].getCell(this.nameIndex, 1).getText() == name) {
         return i;
       }
@@ -46,6 +53,19 @@ updateInventory.prototype.getTableByName = function(name) {
   }
 
   return -1;
+}
+
+updateInventory.prototype.isInventory = function(tableNum) {
+  try {
+      if (this.tables[tableNum].getCell(this.typeIndex, 1).getText() == "Inventory") {
+        return true;
+      }
+    } catch(error) {
+      // Table is not formated as character sheet. Ignore
+      return false;
+    }
+
+    return false;
 }
 
 updateInventory.prototype.setName = function(tableNum, name) {
@@ -83,20 +103,20 @@ updateInventory.prototype.setStat = function(tableNum, stat, value) {
   oldStatsString = this.tables[tableNum].getCell(this.statIndex, 1).getText().slice(1, -1);
   oldStatsArray = oldStatsString.split(",");
 
-  for (i = 0; i < oldStatsArray.length; i++) {
+  for (var i = 0; i < oldStatsArray.length; i++) {
     oldStatsArray[i] = oldStatsArray[i].split(":");
   }
 
   // Find and change stat value
   // Simple brute force approach
-  for(i = 0; i < oldStatsArray.length; i++) {
+  for(var i = 0; i < oldStatsArray.length; i++) {
     if (oldStatsArray[i][0] == stat) {
       oldStatsArray[i][1] = value;
     }
   }
 
   // Convert to string and set cell
-  for(i = 0; i < oldStatsArray.length; i++) {
+  for(var i = 0; i < oldStatsArray.length; i++) {
     oldStatsArray[i] = oldStatsArray[i][0] + ":" + oldStatsArray[i][1];
   }
 
@@ -109,7 +129,7 @@ updateInventory.prototype.getStat = function(tableNum, stat) {
   oldStatsString = this.tables[tableNum].getCell(this.statIndex, 1).getText().slice(1, -1);
   oldStatsArray = oldStatsString.split(",");
 
-  for (i = 0; i < oldStatsArray.length; i++) {
+  for (var i = 0; i < oldStatsArray.length; i++) {
     oldStatsArray[i] = oldStatsArray[i].split(":");
 
     if (oldStatsArray[i][0] == stat) {

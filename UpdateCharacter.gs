@@ -59,7 +59,7 @@ function updateCharacter() {
   this.typeIndex = 7;
 }
 
-updateCharacter.prototype.newCharacter = function(name, chrClass, stats, desc, inv, attacks, image) {
+updateCharacter.prototype.newCharacter = function(name, chrClass, stats, desc, image, inv, attacks) {
   tableData = [
     ["Name", name],
     ["Class", chrClass],
@@ -77,6 +77,7 @@ updateCharacter.prototype.newCharacter = function(name, chrClass, stats, desc, i
     const response = UrlFetchApp.fetch(image);
     const imageBlob = response.getBlob();
     const img = table.getCell(this.imgIndex, 1).insertImage(0, imageBlob);
+    img.setLinkUrl(image);
 
     // Resize the image
     img.setWidth(120);
