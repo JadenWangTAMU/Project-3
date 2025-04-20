@@ -95,7 +95,7 @@ function findTable(tableIdentifier) {
 }
 
 function getFileContent(fileName) {
-  var file = DriveApp.getFilesByName(fileName); // or use .getFilesByName()
+  var file = DriveApp.getFilesByName(fileName + ".csv"); // or use .getFilesByName()
   ImportFile(Utilities.base64Encode(file.next().getBlob().getBytes()));
 }
 
