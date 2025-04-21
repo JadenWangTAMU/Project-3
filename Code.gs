@@ -11,15 +11,6 @@ function onOpen(e) {
   DocumentApp.getUi()
       .createAddonMenu()
       .addItem('Show sidebar', 'showSidebar')
-      .addItem('Dice Roller', 'showDiceRoller')
-      .addItem('Generate Encounter', 'showEncounter')
-      .addItem('Generate Environment', 'showEnvironment')
-      .addItem('Show Character', 'showCharacter')
-      .addItem('Visualize Stats', 'showVisualizeStats')
-      .addItem('Show Inventory', 'showInventory')
-      .addItem('Show Probability', 'showProbability')
-      .addItem('Import File', 'showImport')
-      .addItem('Export File', 'showExport')
       .addToUi();
 }
 
