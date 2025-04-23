@@ -4,16 +4,59 @@
     <base target="_top">
     <!-- Use a templated HTML printing scriptlet to import common stylesheet -->
     <?!= HtmlService.createHtmlOutputFromFile('Stylesheet').getContent(); ?>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap" rel="stylesheet">
+
     <style>
     /* Container for form and image */
     .form-container {
       display: flex;
       align-items: center; /* Aligns image and form vertically */
     }
+  body {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 14px;
+    //background-image: url('https://www.photos-public-domain.com/wp-content/uploads/2011/02/white-parchment-paper-texture.jpg');
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+  }
+  button {
+    display: block;
+    width: 130px;
+    height: 30px;
+    margin-top: 10px;
+    font-family: 'Libre Baskerville', serif;
+  }
+  button.action {
+    //padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    background: #8b0000; 
+    color: white;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  }
+  button.action:hover {
+    background: #c92233;
+    color: white;
+    border-color: #c92233;
+    transform: translateY(-2px);
+  }
+  button.action:active {
+    background: #8b0000;
+    color: white;
+    transform: translateY(0);
+  }
+  input{
+    border-radius: 8px;
+  }
 
     /* Style for the form */
     .form-container form {
-      margin-right: 20px; /* Add space between form and image */
+      margin-right: 30px; /* Add space between form and image */
     }
 
     /* Optional: Resize the image */
@@ -37,30 +80,36 @@
       <img src="https://png.pngtree.com/png-clipart/20240826/original/pngtree-red-dice-with-question-mark-concept-poker-object-photo-png-image_15858522.png" alt="Question Dice" />
     </div>
 
-    <div class="block" id="roll-dice">
-      <!-- Button to trigger dice roll -->
+    <!--<div class="block" id="roll-dice">
+      <!-- Button to trigger dice roll 
       <button class="action" id="roll-dice-button" onclick="rollDice()">Roll</button>
     </div>
 
     <div class="block" id="add-to-doc">
-      <!-- Button to trigger dice roll -->
+      <!-- Button to trigger dice roll 
+      <button class="action" id="add-to-doc-button" onclick="addToDoc()">Add To Doc</button>
+    </div>-->
+    <div class="buttons" style="display: flex; gap: 20px;">
+      <button class="action" id="roll-dice-button" onclick="rollDice()" style="margin-left:10px;">Roll</button>
       <button class="action" id="add-to-doc-button" onclick="addToDoc()">Add To Doc</button>
     </div>
 
     <h3>Result:</h3>
-    <p id="Dice">?</p>
+    <p id="Dice" style="margin-left: 15px;">?</p>
 
     <h3>Average Roll:</h3>
-    <p id="AverageRoll">N/A</p>
+    <p id="AverageRoll" style="margin-left: 15px;">N/A</p>
 
     <h3>Roll History:</h3>
-    <p id="RollHistory">No rolls yet</p>
+    <p id="RollHistory" style="margin-left: 15px;">No rolls yet</p>
 
     <!-- Client-side JavaScript -->
     <script>
       var totalRolls = 0;
       var totalSum = 0;
       var rolls = [];
+      var string = "";
+      var first = true;
 
       // Function to handle the dice roll logic
       function rollDice() {
@@ -92,12 +141,20 @@
         var average = totalSum / totalRolls;
 
         rolls.push(results);
+        if (first){
+          string += results.join(", ");
+          first = false;
+        }
+        else {
+          string += ", ";
+          string += results.join(", ");
+        }
 
-        document.getElementById('Dice').textContent = results.join(",");
+        document.getElementById('Dice').textContent = results.join(", ");
 
         document.getElementById('AverageRoll').textContent = average.toFixed(2);
 
-        document.getElementById('RollHistory').textContent = rolls.join(",");
+        document.getElementById('RollHistory').textContent = string; //rolls.join(",");
       }
 
       function addToDoc() {

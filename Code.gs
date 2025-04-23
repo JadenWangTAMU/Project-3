@@ -102,8 +102,8 @@ function setDocTitle(title) {
 function showDiceRoller() {
   var ui = HtmlService.createTemplateFromFile('DiceRoller')
       .evaluate()
-      .setWidth(400)
-      .setHeight(400)
+      .setWidth(360)
+      .setHeight(450)
       .setSandboxMode(HtmlService.SandboxMode.IFRAME);
   DocumentApp.getUi().showModalDialog(ui, "Dice Roller");
 }
@@ -129,8 +129,8 @@ function showEnvironment() {
 function showVisualizeStats() {
   var ui = HtmlService.createTemplateFromFile('VisualizeStats')
       .evaluate()
-      .setWidth(400)
-      .setHeight(400)
+      .setWidth(500)
+      .setHeight(590)
       .setSandboxMode(HtmlService.SandboxMode.IFRAME);
   DocumentApp.getUi().showModalDialog(ui, "Visualize Stats");
 }
@@ -176,9 +176,9 @@ function insertCharacterToDoc(name, title, statsArray, description, inventory, a
   testClass.newCharacter(name, title, statsArray, description, imageUrl, inventory, attacks);
 }
 
-function insertInventoryToDoc(name, statsArray, description, imageUrl) {
+function insertInventoryToDoc(name, statsArray, description, imageUrl, owner) {
   var testClass=new updateInventory();
-  testClass.newInventory(name, statsArray, description, imageUrl);
+  testClass.newInventory(name, statsArray, description, imageUrl, owner);
 }
 
 function insertEncounterToDoc(name, statsArray, description, imageUrl) {
