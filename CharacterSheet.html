@@ -1,24 +1,68 @@
 <!DOCTYPE html>
-<!-- This document serves as the UI for the character sheet -->
-
 <html>
   <head>
     <base target="_top">
     <!-- Use a templated HTML printing scriptlet to import common stylesheet -->
     <?!= HtmlService.createHtmlOutputFromFile('Stylesheet').getContent(); ?>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+      body {
+        font-family: 'Libre Baskerville', serif;
+        font-size: 14px;
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-top: 5px;
+      }
+      button {
+        display: block;
+        width: 142px;
+        height: 32px;
+        //margin-top: 10px;
+        font-family: 'Libre Baskerville', serif;
+      }
+      button.action {
+        //padding: 10px 20px;
+        font-size: 14.5px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        background: #8b0000; 
+        color: white;
+        transition: background-color 0.3s, transform 0.2s;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      }
+      button.action:hover {
+        background: #c92233;
+        color: white;
+        border-color: #c92233;
+        transform: translateY(-2px);
+      }
+      button.action:active {
+        background: #8b0000;
+        color: white;
+        transform: translateY(0);
+      }
+      button.action:focus {
+        background: #c92233;
+        color: white;
+      }
+      .stats-box {
+        border: none;
+        outline: none;
+        resize: none;
+    }
+    </style>
   </head>
   <body>
     <div id= "button-pics" style="display: flex; gap: 70px;">
-      <div class = "encounters">
-        <button class="button" onclick="showInfo('Wizard')">Wizard</button>
-        <br>
-        <button class="button" onclick="showInfo('Bard')">Bard</button>
-        <br>
-        <button class="button" onclick="showInfo('Rogue')">Rogue</button>
-        <br>
-        <button class="button" onclick="showInfo('Cleric')">Cleric</button>
-        <br>
-        <button class="button" onclick="showInfo('Custom')">Custom</button>
+      <div class = "encounters" style="display:inine-block; font-size: 0;">
+        <button class="action" id="wizard" style="margin-left:5px; margin-bottom:2px;" onclick="showInfo('Wizard')">Wizard</button>
+        <button class="action" style="margin-left:5px; margin-bottom:2px;" onclick="showInfo('Bard')">Bard</button>
+        <button class="action" style="margin-left:5px; margin-bottom:2px;" onclick="showInfo('Rogue')">Rogue</button>
+        <button class="action" style="margin-left:5px; margin-bottom:2px;" onclick="showInfo('Cleric')">Cleric</button>
+        <button class="action" style="margin-left:5px; margin-bottom:2px;" onclick="showInfo('Custom')">Custom</button>
       </div>
       <img id="pic-box" />
     </div>
@@ -31,37 +75,105 @@
       let statsBox = document.getElementById("stats-box");
       let picBox = document.getElementById("pic-box");
       let buttonPics = document.getElementById("button-pics");
+      let imgBox = document.getElementById("img-box");
+      let nameBox = document.getElementById("name-box");
+      let inventoryBox = document.getElementById("inventory-box");
+      let attacksBox = document.getElementById("attacks-box");
+      let clickDescription = false;
+      let clickTitle = false;
+      let clickName = false;
+      let clickInventory = false;
+      let clickAttacks = false;
+      let clickImg = false;
       if (encounter === "Wizard") {
           titleBox.value = "Wizard";
           descriptionBox.value = "An arcane spellcaster capable of fantastic tricks and limited only by their spellbook";
           picBox.src = "https://png.pngtree.com/png-clipart/20250217/original/pngtree-powerful-wizard-in-purple-robe-with-staff-png-image_19840831.png";
           picBox.style = "width: 120px; height: 180px;";
           buttonPics.style = "display: flex; gap: 70px;";
+          imgBox.style.display = "none";
+          imgBox.value=picBox.src;
+          nameBox.value="[Default Name]";
+          inventoryBox.value="[Default Inventory]";
+          attacksBox.value="[Default Attacks]";
         } else if (encounter === "Bard") {
           titleBox.value = "Bard";
           descriptionBox.value = "A sorcerer who uses song and speech to inspire allies, demoralize foes, and manipulate situations";
           picBox.src = "https://png.pngtree.com/png-clipart/20240418/original/pngtree-elf-bard-character-with-natural-twenty-dice-roll-sticker-png-image_14874513.png";
           picBox.style = "width: 120px; height: 180px;";
           buttonPics.style = "display: flex; gap: 70px;";
+          imgBox.style.display = "none";
+          imgBox.value=picBox.src;
+          nameBox.value="[Default Name]";
+          inventoryBox.value="[Default Inventory]";
+          attacksBox.value="[Default Attacks]";
         } else if (encounter === "Rogue") {
           titleBox.value = "Rogue";
           descriptionBox.value = "A versatile thief skilled in stealth, trickery, and combat, sneak attacking and outmaneuvering opponents";
           picBox.src = "https://png.pngtree.com/png-vector/20240724/ourmid/pngtree-dnd-adventurer-png-image_12861468.png";
           picBox.style = "width: 120px; height: 180px;";
           buttonPics.style = "display: flex; gap: 70px;";
+          imgBox.style.display = "none";
+          imgBox.value=picBox.src;
+          nameBox.value="[Default Name]";
+          inventoryBox.value="[Default Inventory]";
+          attacksBox.value="[Default Attacks]";
         } else if (encounter === "Cleric") {
           titleBox.value = "Cleric";
           descriptionBox.value = "A spellcaster chosen by a deity to heal, buff, and strike others with holy might";
           picBox.src = "https://www.gmbinder.com/images/T1qGDIc.png";
           picBox.style = "width: 160px; height: 180px;";
           buttonPics.style = "display: flex; gap: 50px;";
+          imgBox.style.display = "none";
+          imgBox.value=picBox.src;
+          nameBox.value="[Default Name]";
+          inventoryBox.value="[Default Inventory]";
+          attacksBox.value="[Default Attacks]";
         } else if (encounter === "Custom") {
-          titleBox.value = "[Give your character a title here]";
+          titleBox.value = "[Default Title]";
           descriptionBox.value = "[Give your character a description here]";
           picBox.src = "https://upload.wikimedia.org/wikipedia/commons/5/5a/Black_question_mark.png";
           picBox.style = "width: 120px; height: 180px; object-fit: cover;";
           buttonPics.style = "display: flex; gap: 70px;";
+          descriptionBox.onclick = function(){
+            if (clickDescription == false){
+              this.value = "";
+              clickDescription = true;
+            }
+          };
+          titleBox.onclick = function(){
+            if (clickTitle == false){
+              this.value = "";
+              clickTitle = true;
+            }
+          };
+          imgBox.style.display = '';
+          imgBox.value="Enter image url here (x.jpg, x.png, etc): ";
+          imgBox.onclick = function(){
+            if (clickImg == false){
+              this.value = "";
+              clickImg = true;
+            }
+          };
         }
+        nameBox.onclick = function(){
+            if (clickName == false){
+              this.value = "";
+              clickName = true;
+            }
+          };
+          inventoryBox.onclick = function(){
+            if (clickInventory == false){
+              this.value = "";
+              clickInventory = true;
+            }
+          };
+          attacksBox.onclick = function(){
+            if (clickAttacks == false){
+              this.value = "";
+              clickAttacks = true;
+            }
+          };
     }
     function saveCharacter() {
       const name = document.getElementById("name-box").value;
@@ -69,7 +181,7 @@
       const description = document.getElementById("description-box").value;
       const inventory = document.getElementById("inventory-box").value;
       const attacks = document.getElementById("attacks-box").value;
-      const picSrc = document.getElementById("pic-box").src;
+      const imgSrc = document.getElementById("img-box").value;
 
       const statInputs = document.querySelectorAll("#stats-box input");
       const stats = Array.from(statInputs).map(input => input.value || 0);
@@ -85,19 +197,26 @@
       statsFinal+="WIS:"+stats[7]+",";
       statsFinal+="CHA:"+stats[8]+"]";
 
-      google.script.run.insertCharacterToDoc(name, title, statsFinal, description, inventory, attacks, picSrc);
+      google.script.run.insertCharacterToDoc(name, title, statsFinal, description, inventory, attacks, imgSrc, stats);
     }
+    window.onload = function() {
+      showInfo('Wizard');
+      let wizButton = document.getElementById("wizard");
+      wizButton.focus(); //to get wizard button to be clicked automatically when page opens
+      
+    };
     </script>
 
     <!--<textarea id="description-box" style="width: 50%; height: 175px; margin-top: 20px; text-align:left;" readonly></textarea>
     <textarea id="stats-box" style="width: 50%; height: 175px; margin-top: 20px; text-align:right;" readonly></textarea>-->
     <div style="display: flex; gap: 40px;">
       <div style="display: flex; flex-direction: column; gap: 5px;">
-        <textarea id="name-box" style="width: 100%; height: 30px; margin-top: 10px; text-align:left; font-size:17px; font-style:italic; resize: none;">[Default Name]</textarea>
-        <textarea id="title-box" style="width: 100%; height: 30px; margin-top: 10px; text-align:left; font-size:17px; font-style:italic; resize: none;">[Default Title]</textarea>
-        <textarea id="description-box" style="width: 100%; height: 145px; margin-top: 10px; text-align:left; font-size:17px; font-style:italic; resize: none;">[Default Description]</textarea>
-        <textarea id="inventory-box" style="width: 100%; height: 30px; margin-top: 10px; text-align:left; font-size:17px; font-style:italic; resize: none;">[Default Inventory]</textarea>
-        <textarea id="attacks-box" style="width: 100%; height: 30px; margin-top: 10px; text-align:left; font-size:17px; font-style:italic; resize: none;">[Default Attacks]</textarea>
+        <textarea id="name-box" style="width: 100%; height: 30px; margin-top: 4px; text-align:left; font-size:17px; font-style:italic; resize: none;">[Default Name]</textarea>
+        <textarea id="title-box" style="width: 100%; height: 30px; margin-top: 4px; text-align:left; font-size:17px; font-style:italic; resize: none;">[Default Title]</textarea>
+        <textarea id="description-box" style="width: 100%; height: 145px; margin-top: 4px; text-align:left; font-size:17px; font-style:italic; resize: none;">[Default Description]</textarea>
+        <textarea id="inventory-box" style="width: 100%; height: 30px; margin-top: 4px; text-align:left; font-size:17px; font-style:italic; resize: none;">[Default Inventory]</textarea>
+        <textarea id="attacks-box" style="width: 100%; height: 30px; margin-top: 4px; text-align:left; font-size:17px; font-style:italic; resize: none;">[Default Attacks]</textarea>
+        <textarea type="hidden" id="img-box" style="width: 95%; height: 70px; margin-top: 4px; text-align:left; font-size:17px; font-style:italic; resize: none; display:none;""></textarea>
         <div class="block" id="save-character">
           <button class="action" id="save-character-button" onclick="saveCharacter()">Save Character</button>
         </div>
@@ -150,35 +269,8 @@
               <input type="number" id="CHA" name="CHA" style="width: 100px; text-align: center;">
             </div>
           </form>
-        </div>
+      </div>
     </div>
   </body>
 </html>
 
-<style>
-.button:hover {
-  background: #656565; 
-  color: white;
-  text-align: center;
-  width: 150px;
-  height: 35px;
-}
-.button:active {
-  background: #656565; 
-  color: white;
-  text-align: center;
-  width: 150px;
-  height: 35px;
-}
-.button {
-  text-align: center;
-  width: 150px;
-  height: 35px;
-  font-size: 15px;
-}
-.stats-box {
-    border: none;
-    outline: none;
-    resize: none;
-}
-</style>

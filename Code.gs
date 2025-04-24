@@ -44,8 +44,8 @@ function showSidebar() {
 function showCharacter() {
   var ui = HtmlService.createTemplateFromFile('CharacterSheet')
       .evaluate()
-      .setWidth(400)
-      .setHeight(470)
+      .setWidth(420)
+      .setHeight(630)
       .setSandboxMode(HtmlService.SandboxMode.IFRAME);
   DocumentApp.getUi().showModalDialog(ui, "Create Character");
 }
@@ -102,8 +102,8 @@ function setDocTitle(title) {
 function showDiceRoller() {
   var ui = HtmlService.createTemplateFromFile('DiceRoller')
       .evaluate()
-      .setWidth(360)
-      .setHeight(450)
+      .setWidth(400)
+      .setHeight(400)
       .setSandboxMode(HtmlService.SandboxMode.IFRAME);
   DocumentApp.getUi().showModalDialog(ui, "Dice Roller");
 }
@@ -129,8 +129,8 @@ function showEnvironment() {
 function showVisualizeStats() {
   var ui = HtmlService.createTemplateFromFile('VisualizeStats')
       .evaluate()
-      .setWidth(500)
-      .setHeight(590)
+      .setWidth(400)
+      .setHeight(400)
       .setSandboxMode(HtmlService.SandboxMode.IFRAME);
   DocumentApp.getUi().showModalDialog(ui, "Visualize Stats");
 }
@@ -173,14 +173,40 @@ function showExport() {
 
 function insertCharacterToDoc(name, title, statsArray, description, inventory, attacks, imageUrl) {
   var testClass=new updateCharacter();
-  testClass.newCharacter(name, title, statsArray, description, imageUrl, inventory, attacks);
+  var firstCharInv = inventory.charAt(0);
+  var lastCharInv = inventory.charAt(inventory.length - 1);
+  if(!(firstCharInv==="[")){
+    inventory="["+inventory;
+  }
+  if(!(lastCharInv==="]")){
+    inventory=inventory+"]";
+  }
+  testClass.newCharacter(name, title, statsArray, description, inventory, attacks, imageUrl);
+  var trimmedInv = inventory.substring(1, inventory.length - 1);
+  var invItems = trimmedInv ? trimmedInv.split(",") : [];
+  for(var i=0; i<invItems.length; i++){
+    insertInventoryToDoc(invItems[i], "", "", "https://upload.wikimedia.org/wikipedia/commons/5/5a/Black_question_mark.png", name, true);
+  }
 }
 
-function insertInventoryToDoc(name, statsArray, description, imageUrl, owner) {
+function insertInventoryToDoc(name, statsArray, description, imageUrl, owner, fromCharacter) {
   var testClass=new updateInventory();
   testClass.newInventory(name, statsArray, description, imageUrl, owner);
+  
+  if(!fromCharacter){
+    var testClassCharacter=new updateCharacter();
+    var characterNumber=testClassCharacter.getTableByName(owner);
+    console.log(characterNumber);
+    if(characterNumber!=-1){
+      var currentInv=testClassCharacter.getInventory(characterNumber);
+      var trimmedInv = currentInv.substring(1, currentInv.length - 1);
+      var invItems = trimmedInv ? trimmedInv.split(",") : [];
+      invItems.push(name);
+      var updatedInvItems = "[" + invItems.join(",") + "]";
+      testClassCharacter.setInventory(characterNumber, updatedInvItems);
+    }
+  }
 }
-
 function insertEncounterToDoc(name, statsArray, description, imageUrl) {
   var testClass=new updateEncounter();
   testClass.newEncounter(name, statsArray, description, imageUrl);
