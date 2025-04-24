@@ -1,24 +1,66 @@
 <!DOCTYPE html>
-<!-- This document serves as the UI for the character sheet -->
-
 <html>
   <head>
     <base target="_top">
     <!-- Use a templated HTML printing scriptlet to import common stylesheet -->
     <?!= HtmlService.createHtmlOutputFromFile('Stylesheet').getContent(); ?>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+      body {
+        font-family: 'Libre Baskerville', serif;
+        font-size: 14px;
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-top: 5px;
+      }
+      button {
+        display: block;
+        width: 145px;
+        height: 32px;
+        //margin-top: 10px;
+        font-family: 'Libre Baskerville', serif;
+      }
+      button.action {
+        //padding: 10px 20px;
+        font-size: 14px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        background: #8b0000; 
+        color: white;
+        transition: background-color 0.3s, transform 0.2s;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      }
+      button.action:hover {
+        background: #c92233;
+        color: white;
+        border-color: #c92233;
+        transform: translateY(-2px);
+      }
+      button.action:active {
+        background: #8b0000;
+        color: white;
+        transform: translateY(0);
+      }
+      button.action:focus {
+        background: #c92233;
+        color: white;
+      }
+      img {
+        object-fit: cover;
+      }
+    </style>
   </head>
   <body>
     <div id= "button-pics" style="display: flex; gap: 40px;">
-      <div class = "encounters">
-        <button class="button" onclick="showInfo('Enchanted Forest')">Enchanted Forest</button>
-        <br>
-        <button class="button" onclick="showInfo('Mountain Range')">Mountain Range</button>
-        <br>
-        <button class="button" onclick="showInfo('Misty Swamp')">Misty Swamp</button>
-        <br>
-        <button class="button" onclick="showInfo('Market Town')">Market Town</button>
-        <br>
-        <button class="button" onclick="showInfo('Make My Own')">Make My Own</button>
+      <div class = "encounters" style="display:inine-block; font-size: 0;">
+        <button class="action" id ="forest" style="margin-left:5px; margin-bottom:2px;" onclick="showInfo('Enchanted Forest')">Enchanted Forest</button>
+        <button class="action" style="margin-left:5px; margin-bottom:2px;" onclick="showInfo('Mountain Range')">Mountain Range</button>
+        <button class="action" style="margin-left:5px; margin-bottom:2px;" onclick="showInfo('Misty Swamp')">Misty Swamp</button>
+        <button class="action" style="margin-left:5px; margin-bottom:2px;" onclick="showInfo('Market Town')">Market Town</button>
+        <button class="action" style="margin-left:5px; margin-bottom:2px;" onclick="showInfo('Make My Own')">Make My Own</button>
       </div>
       <img id="pic-box" />
     </div>
@@ -91,44 +133,24 @@
 
       google.script.run.insertEnvironmentToDoc(name, description, picSrc);
     }
+    window.onload = function() {
+      showInfo('Enchanted Forest');
+      let forestButton = document.getElementById("forest");
+      forestButton.focus(); //to get orc button to be clicked automatically when page opens
+      
+    };
     </script>
 
-    <div style="display: flex; gap: 40px;">
+    <div style="display: flex; gap: 30px;">
       <div style="display: flex; flex-direction: column; gap: 5px;">
         <div class = info style="display: flex; flex-direction: column">
-          <textarea id="description-box" style="width: 95%; height: 145px; margin-top: 20px; text-align:left; font-size:17px; font-style:italic; resize: none;"></textarea>
+          <textarea id="description-box" style="width: 100%; height: 200px; margin-top: 20px; text-align:left; font-size:16px; font-style:italic; resize: none;"></textarea>
           <textarea type="hidden" id="name-box" style="width: 95%; height: 35px; margin-top: 5px; text-align:left; font-size:17px; font-style:italic; resize: none; display:none;""></textarea>
         </div>
       </div>
-      <div class="submit-button" style="display: flex; justify-content:left; margin-top: 15px;">
-        <button class="button" type="submit" onClick="saveEnvironment()">Submit</button>
+      <div class="submit-button" style="display: flex; justify-content:left; margin-top: 25px;">
+        <button class="action" type="submit" onClick="saveEnvironment()">Submit</button>
       </div>
     </div>
   </body>
 </html>
-
-<style>
-.button:hover {
-  background: #656565; 
-  color: white;
-  text-align: center;
-  width: 150px;
-  height: 35px;
-}
-.button:active {
-  background: #656565; 
-  color: white;
-  text-align: center;
-  width: 150px;
-  height: 35px;
-}
-.button {
-  text-align: center;
-  width: 150px;
-  height: 35px;
-  font-size: 15px;
-}
-img {
-    object-fit: cover;
-}
-</style>

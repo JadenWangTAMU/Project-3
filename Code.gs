@@ -120,7 +120,7 @@ function showEncounter() {
 function showEnvironment() {
   var ui = HtmlService.createTemplateFromFile('Environment')
       .evaluate()
-      .setWidth(410)
+      .setWidth(430)
       .setHeight(490)
       .setSandboxMode(HtmlService.SandboxMode.IFRAME);
   DocumentApp.getUi().showModalDialog(ui, "Generate Environment");
