@@ -7,15 +7,17 @@ function updateInventory() {
   this.statIndex = 1;
   this.descIndex = 2;
   this.imgIndex = 3;
-  this.typeIndex = 4;
+  this.ownIndex = 4;
+  this.typeIndex = 5;
 }
 
-updateInventory.prototype.newInventory = function(name, stats, desc, image) {
+updateInventory.prototype.newInventory = function(name, stats, desc, image, owner) {
   tableData = [
     ["Name", name],
     ["Stats", stats],
     ["Description", desc],
     ["Image", ""],
+    ["Owner", owner],
     ["Type", "Inventory"]
   ];
 
@@ -91,6 +93,14 @@ updateInventory.prototype.setDescription = function(tableNum, descritption) {
 
 updateInventory.prototype.getDescription = function(tableNum) {
   return this.tables[tableNum].getCell(this.descIndex, 1);
+}
+
+updateInventory.prototype.setOwner = function(tableNum, owner) {
+  this.tables[tableNum].getCell(this.ownIndex, 1).setText(owner);
+}
+
+updateInventory.prototype.getOwner = function(tableNum) {
+  return this.tables[tableNum].getCell(this.ownIndex, 1);
 }
 
 updateInventory.prototype.setImage = function(tableNum, img) {

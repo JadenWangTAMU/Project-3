@@ -56,10 +56,9 @@ function updateCharacter() {
   this.imgIndex = 4;
   this.invIndex = 5;
   this.attackIndex = 6;
-  this.typeIndex = 7;
 }
 
-updateCharacter.prototype.newCharacter = function(name, chrClass, stats, desc, image, inv, attacks) {
+updateCharacter.prototype.newCharacter = function(name, chrClass, stats, desc, inv, attacks, image) {
   tableData = [
     ["Name", name],
     ["Class", chrClass],
@@ -67,8 +66,7 @@ updateCharacter.prototype.newCharacter = function(name, chrClass, stats, desc, i
     ["Description", desc],
     ["Image", ""],
     ["Inventory", inv],
-    ["Attacks", attacks],
-    ["Type","Character"]
+    ["Attacks", attacks]
   ];
 
   table = this.body.appendTable(tableData);
@@ -77,7 +75,6 @@ updateCharacter.prototype.newCharacter = function(name, chrClass, stats, desc, i
     const response = UrlFetchApp.fetch(image);
     const imageBlob = response.getBlob();
     const img = table.getCell(this.imgIndex, 1).insertImage(0, imageBlob);
-    img.setLinkUrl(image);
 
     // Resize the image
     img.setWidth(120);
@@ -91,34 +88,12 @@ updateCharacter.prototype.newCharacter = function(name, chrClass, stats, desc, i
 
 updateCharacter.prototype.getTableByName = function(name) {
   for(i = 0; i < this.tables.length; i++) {
-    try {
-      if (!this.isCharacter(i)) {
-        continue;
-      }
-      
-      if (this.tables[i].getCell(this.nameIndex, 1).getText() == name) {
-        return i;
-      }
-    } catch(error) {
-      // Table is not formated as character sheet. Ignore
-      continue;
+    if (this.tables[i].getCell(this.nameIndex, 1).getText() == name) {
+      return i;
     }
   }
 
   return -1;
-}
-
-updateCharacter.prototype.isCharacter = function(tableNum) {
-  try {
-      if (this.tables[tableNum].getCell(this.typeIndex, 1).getText() == "Character") {
-        return true;
-      }
-    } catch(error) {
-      // Table is not formated as character sheet. Ignore
-      return false;
-    }
-
-    return false;
 }
 
 updateCharacter.prototype.setName = function(tableNum, name) {
@@ -168,7 +143,7 @@ updateCharacter.prototype.setInventory = function(tableNum, inventory) {
 }
 
 updateCharacter.prototype.getInventory = function(tableNum) {
-  this.tables[tableNum].getCell(this.invIndex, 1).getText();
+  return this.tables[tableNum].getCell(this.invIndex, 1).getText();
 }
 
 updateCharacter.prototype.setAttacks = function(tableNum, attacks) {
@@ -176,7 +151,7 @@ updateCharacter.prototype.setAttacks = function(tableNum, attacks) {
 }
 
 updateCharacter.prototype.getAttacks = function(tableNum) {
-  this.tables[tableNum].getCell(this.attackIndex, 1).getText();
+  return this.tables[tableNum].getCell(this.attackIndex, 1).getText();
 }
 
 // Sets specific stat as value. High-key some bad code, but it works
@@ -236,11 +211,12 @@ updateCharacter.prototype.getStatAsArray = function(tableNum) {
   return newStatsArray;
 }
 
+// function test() {
+//   var testClass = new updateCharacter();
+//   //testClass.body.clear();
+//   testClass.newCharacter("Bob", "Druid", "[HP:15,STR:14,INT:3]", "A not very intelligent druid.", null, "['Wooden Staff', 'Potion']", "['Thorn Whip']");
+//   testClass.newCharacter("Not Bob", "Druid", "[HP:15,STR:14,INT:3]", "A not very intelligent druid.", null, "['Wooden Staff', 'Potion']", "['Thorn Whip']");
 
-function test() {
-  var testClass = new updateCharacter();
-  //testClass.body.clear();
-  //testClass.newCharacter("bob", "test", "[AC:10,HP:3,SP:0,STR:0,DEX:0,CON:0,INT:0,WIS:0,CHA:0]", "this is a test", "[test]", "[test]", null);
-  console.log(testClass.getStat(testClass.getTableByName("bob"), "AC"));
-
-}
+//   console.log(testClass.getTableByName("Bob"));
+//   console.log(testClass.getTableByName("Not Bob"));
+// }

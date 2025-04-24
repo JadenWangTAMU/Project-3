@@ -20,6 +20,73 @@
     <p id="encounter-prob">N/A</p>
     <p id="verdict-title">Verdict:</p>
     <p id="verdict">N/A</p>
+    <p id="formula">Probability Formula:</p>
+    <div id="stats-box" style="overflow-x: auto; white-space: nowrap; margin-top: 20px; padding: 10px; font-size: 15px;">
+      <form style="display: inline-flex; flex-direction: row; align-items: center; gap: 12px; flex-wrap: nowrap;">
+        <!-- Each stat: label + input -->
+        <div style="display: flex; align-items: center; gap: 4px;">
+          <label for="AC">AC * </label>
+          <input type="number" id="AC" name="AC" value="0.1" style="width: 60px; text-align: center;">
+        </div>
+
+        <span>+</span>
+
+        <div style="display: flex; align-items: center; gap: 4px;">
+          <label for="HP">HP * </label>
+          <input type="number" id="HP" name="HP" value="0.15" style="width: 60px; text-align: center;">
+        </div>
+
+        <span>+</span>
+
+        <div style="display: flex; align-items: center; gap: 4px;">
+          <label for="SP">SP * </label>
+          <input type="number" id="SP" name="SP" value="0.15" style="width: 60px; text-align: center;">
+        </div>
+
+        <span>+</span>
+
+        <div style="display: flex; align-items: center; gap: 4px;">
+          <label for="STR">STR * </label>
+          <input type="number" id="STR" name="STR" value="0.15" style="width: 60px; text-align: center;">
+        </div>
+
+        <span>+</span>
+
+        <div style="display: flex; align-items: center; gap: 4px;">
+          <label for="DEX">DEX * </label>
+          <input type="number" id="DEX" name="DEX" value="0.08" style="width: 60px; text-align: center;">
+        </div>
+
+        <span>+</span>
+
+        <div style="display: flex; align-items: center; gap: 4px;">
+          <label for="CON">CON * </label>
+          <input type="number" id="CON" name="CON" value="0.08" style="width: 60px; text-align: center;">
+        </div>
+
+        <span>+</span>
+
+        <div style="display: flex; align-items: center; gap: 4px;">
+          <label for="INT">INT * </label>
+          <input type="number" id="INT" name="INT" value="0.08" style="width: 60px; text-align: center;">
+        </div>
+
+        <span>+</span>
+
+        <div style="display: flex; align-items: center; gap: 4px;">
+          <label for="WIS">WIS * </label>
+          <input type="number" id="WIS" name="WIS" value="0.1" style="width: 60px; text-align: center;">
+        </div>
+
+        <span>+</span>
+
+        <div style="display: flex; align-items: center; gap: 4px;">
+          <label for="CHA">CHA * </label>
+          <input type="number" id="CHA" name="CHA" value="0.1" style="width: 60px; text-align: center;">
+        </div>
+      </form>
+    </div>
+
     <div class="block" id="calc-prob">
       <button class="action" id="calc-prob-button" onclick="calcProb()">Calculate Probability</button>
     </div>
@@ -31,12 +98,21 @@
         google.script.run.withSuccessHandler(displayEncounter).searchEncounterInDoc(encounterName);
       }
       function displayCharacter(characterStats){
+        const statInputs = document.querySelectorAll("#stats-box input");
+        const stats = Array.from(statInputs).map(input => input.value || 0);
+
         document.getElementById('character-stats').textContent = characterStats;
-        document.getElementById('character-prob').textContent = (characterStats[0]*0.1+characterStats[1]*0.15+characterStats[2]*0.15+characterStats[3]*0.15+characterStats[4]*0.08+characterStats[5]*0.08+characterStats[6]*0.08+characterStats[7]*0.1+characterStats[8]*0.1+0.01).toFixed(2);
+        
+        document.getElementById('character-prob').textContent = (characterStats[0]*stats[0]+characterStats[1]*stats[1]+characterStats[2]*stats[2]+characterStats[3]*stats[3]+characterStats[4]*stats[4]+characterStats[5]*stats[5]+characterStats[6]*stats[6]+characterStats[7]*stats[7]+characterStats[8]*stats[8]+0.01).toFixed(2);
       }
       function displayEncounter(encounterStats){
+        const statInputs = document.querySelectorAll("#stats-box input");
+        const stats = Array.from(statInputs).map(input => input.value || 0);
+
         document.getElementById('encounter-stats').textContent = encounterStats;
-        document.getElementById('encounter-prob').textContent = (encounterStats[0]*0.1+encounterStats[1]*0.15+encounterStats[2]*0.15+encounterStats[3]*0.15+encounterStats[4]*0.08+encounterStats[5]*0.08+encounterStats[6]*0.08+encounterStats[7]*0.1+encounterStats[8]*0.1+0.01).toFixed(2);
+        
+        document.getElementById('encounter-prob').textContent = (encounterStats[0]*stats[0]+encounterStats[1]*stats[1]+encounterStats[2]*stats[2]+encounterStats[3]*stats[3]+encounterStats[4]*stats[4]+encounterStats[5]*stats[5]+encounterStats[6]*stats[6]+encounterStats[7]*stats[7]+encounterStats[8]*stats[8]+0.01).toFixed(2);
+
         document.getElementById('verdict').textContent=((parseFloat(document.getElementById('character-prob').textContent)-(parseFloat(document.getElementById('encounter-prob').textContent)))<0) ? "Character likely loses" : "Character likely wins";
       }
     </script>
