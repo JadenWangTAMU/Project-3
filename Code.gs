@@ -138,8 +138,8 @@ function showVisualizeStats() {
 function showInventory() {
   var ui = HtmlService.createTemplateFromFile('Inventory')
       .evaluate()
-      .setWidth(400)
-      .setHeight(460)
+      .setWidth(420)
+      .setHeight(590)
       .setSandboxMode(HtmlService.SandboxMode.IFRAME);
   DocumentApp.getUi().showModalDialog(ui, "Inventory");
 }
