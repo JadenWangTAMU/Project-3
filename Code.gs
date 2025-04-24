@@ -111,8 +111,8 @@ function showDiceRoller() {
 function showEncounter() {
   var ui = HtmlService.createTemplateFromFile('Encounter')
       .evaluate()
-      .setWidth(400)
-      .setHeight(460)
+      .setWidth(420)
+      .setHeight(530)
       .setSandboxMode(HtmlService.SandboxMode.IFRAME);
   DocumentApp.getUi().showModalDialog(ui, "Generate Encounter");
 }

@@ -1,24 +1,68 @@
 <!DOCTYPE html>
-<!-- This document serves as the UI for the character sheet -->
-
 <html>
   <head>
     <base target="_top">
     <!-- Use a templated HTML printing scriptlet to import common stylesheet -->
     <?!= HtmlService.createHtmlOutputFromFile('Stylesheet').getContent(); ?>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+      body {
+        font-family: 'Libre Baskerville', serif;
+        font-size: 14px;
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-top: 5px;
+      }
+      button {
+        display: block;
+        width: 142px;
+        height: 32px;
+        //margin-top: 10px;
+        font-family: 'Libre Baskerville', serif;
+      }
+      button.action {
+        //padding: 10px 20px;
+        font-size: 14.5px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        background: #8b0000; 
+        color: white;
+        transition: background-color 0.3s, transform 0.2s;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      }
+      button.action:hover {
+        background: #c92233;
+        color: white;
+        border-color: #c92233;
+        transform: translateY(-2px);
+      }
+      button.action:active {
+        background: #8b0000;
+        color: white;
+        transform: translateY(0);
+      }
+      button.action:focus {
+        background: #c92233;
+        color: white;
+      }
+      .stats-box {
+        border: none;
+        outline: none;
+        resize: none;
+    }
+    </style>
   </head>
   <body>
     <div id= "button-pics" style="display: flex; gap: 70px;">
-      <div class = "encounters">
-        <button class="button" onclick="showInfo('Orc')">Orc</button>
-        <br>
-        <button class="button" onclick="showInfo('Goblin')">Goblin</button>
-        <br>
-        <button class="button" onclick="showInfo('Kobold')">Kobold</button>
-        <br>
-        <button class="button" onclick="showInfo('Dragon')">Dragon</button>
-        <br>
-        <button class="button" onclick="showInfo('Make My Own')">Make My Own</button>
+      <div class = "encounters" style="display:inine-block; font-size: 0;">
+        <button class="action" id ="orc" style="margin-left:5px; margin-bottom:2px;" onclick="showInfo('Orc')">Orc</button>
+        <button class="action" style="margin-left:5px; margin-bottom:2px;" onclick="showInfo('Goblin')">Goblin</button>
+        <button class="action" style="margin-left:5px; margin-bottom:2px;" onclick="showInfo('Kobold')">Kobold</button>
+        <button class="action" style="margin-left:5px; margin-bottom:2px;" onclick="showInfo('Dragon')">Dragon</button>
+        <button class="action" style="margin-left:5px; margin-bottom:2px;" onclick="showInfo('Make My Own')">Make My Own</button>
       </div>
       <img id="pic-box" />
     </div>
@@ -34,6 +78,7 @@
       let imgBox = document.getElementById("img-box");
       let clickDescription = false;
       let clickName = false;
+      let clickImg = false;
       if (encounter === "Orc") {
           descriptionBox.value = "A fearsome creature known for its strength and aggression.";
           picBox.src = "https://www.dndbeyond.com/avatars/thumbnails/30834/160/1000/1000/638063882785865067.png";
@@ -92,6 +137,12 @@
           nameBox.style.display = '';
           imgBox.style.display = '';
           imgBox.value="Enter image url here (x.jpg, x.png, etc): ";
+          imgBox.onclick = function(){
+            if (clickImg == false){
+              this.value = "";
+              clickImg = true;
+            }
+          };
         }
     }
 
@@ -116,6 +167,12 @@
 
       google.script.run.insertEncounterToDoc(name, statsFinal, description, imgSrc);
     }
+    window.onload = function() {
+      showInfo('Orc');
+      let orcButton = document.getElementById("orc");
+      orcButton.focus(); //to get orc button to be clicked automatically when page opens
+      
+    };
     </script>
     <div style="display: flex; gap: 40px;">
       <div style="display: flex; flex-direction: column; gap: 5px;">
@@ -182,30 +239,3 @@
   </body>
 </html>
 
-<style>
-.button:hover {
-  background: #656565; 
-  color: white;
-  text-align: center;
-  width: 150px;
-  height: 35px;
-}
-.button:active {
-  background: #656565; 
-  color: white;
-  text-align: center;
-  width: 150px;
-  height: 35px;
-}
-.button {
-  text-align: center;
-  width: 150px;
-  height: 35px;
-  font-size: 15px;
-}
-.stats-box {
-    border: none;
-    outline: none;
-    resize: none;
-}
-</style>
