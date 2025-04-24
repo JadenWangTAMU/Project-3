@@ -147,8 +147,8 @@ function showInventory() {
 function showProbability() {
   var ui = HtmlService.createTemplateFromFile('ProbabilityCalc')
       .evaluate()
-      .setWidth(600)
-      .setHeight(500)
+      .setWidth(700)
+      .setHeight(570)
       .setSandboxMode(HtmlService.SandboxMode.IFRAME);
   DocumentApp.getUi().showModalDialog(ui, "Generate Probability");
 }
