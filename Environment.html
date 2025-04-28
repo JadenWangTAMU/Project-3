@@ -72,8 +72,10 @@
       let picBox = document.getElementById("pic-box");
       let buttonPics = document.getElementById("button-pics");
       let nameBox = document.getElementById("name-box");
+      let imgBox = document.getElementById("img-box");
       let clickDescription = false;
       let clickName = false;
+      let clickImg = false;
       if (encounter === "Enchanted Forest") {
           descriptionBox.value = "A mystical woodland where the trees seem to whisper ancient secrets. The air is thick with magic, and strange, glowing flora light up the paths. A place of beauty and danger in equal measure.";
           picBox.src = "https://static.wixstatic.com/media/70fbf4_c1df13904ddd430589d8dd8e370ca6d9~mv2.jpeg/v1/fill/w_980,h_653,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/70fbf4_c1df13904ddd430589d8dd8e370ca6d9~mv2.jpeg";
@@ -81,6 +83,8 @@
           buttonPics.style = "display: flex; gap: 30px;";
           nameBox.style.display = "none";
           nameBox.value = "Enchanted Forest";
+          imgBox.style.display = "none";
+          imgBox.value=picBox.src;
         } else if (encounter === "Mountain Range") {
           descriptionBox.value = "Towering peaks stretch across the horizon, their snow-covered summits piercing the sky. Rugged terrain and hidden valleys make this a land of extremes, where only the most resilient can thrive.";
           picBox.src = "https://uploads.worldanvil.com/uploads/images/49081822e6414785440d24dd845e8c69.jpeg";
@@ -88,6 +92,8 @@
           buttonPics.style = "display: flex; gap: 30px;";
           nameBox.style.display = "none";
           nameBox.value = "Mountain Range";
+          imgBox.style.display = "none";
+          imgBox.value=picBox.src;
         } else if (encounter === "Misty Swamp") {
           descriptionBox.value = "A damp, eerie expanse where thick fog rolls over the murky waters. The ground squelches beneath your feet, and the distant croaks of unseen creatures echo through the trees. Danger lurks in every shadow.";
           picBox.src = "https://partybickering.wordpress.com/wp-content/uploads/2019/12/colrathisle.jpg";
@@ -95,6 +101,8 @@
           buttonPics.style = "display: flex; gap: 30px;";
           nameBox.style.display = "none";
           nameBox.value = "Misty Swamp";
+          imgBox.style.display = "none";
+          imgBox.value=picBox.src;
         } else if (encounter === "Market Town") {
           descriptionBox.value = "A bustling hub of commerce, where merchants from all over the world trade goods in colorful stalls. The air is filled with the scent of fresh produce, exotic spices, and the sound of lively chatter and bargaining.";
           picBox.src = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh-yFHSD7fzzsBMnXzUhVrEsEfHHDaARhY44eNwJJvxE4pAB0gP37cYtvIoOCzhkNL6tXzMM4S33Vl3TtTE7fSsPxgIGVU4AiVGfcJZlM4f3x7_UHzdJFbpbcaTRotJ4JDAfLX9ZMxdzlQ/s1600/m2.jpg";
@@ -102,6 +110,8 @@
           buttonPics.style = "display: flex; gap: 30px;";
           nameBox.style.display = "none";
           nameBox.value = "Market Town";
+          imgBox.style.display = "none";
+          imgBox.value=picBox.src;
         } else if (encounter === "Make My Own") {
           descriptionBox.value = "Create your own environment!";
           nameBox.value = "Enter name here: ";
@@ -123,13 +133,21 @@
             }
           };
           nameBox.style.display = '';
+          imgBox.onclick = function(){
+            if (clickImg == false){
+              this.value = "";
+              clickImg = true;
+            }
+          };
+          imgBox.style.display = '';
+          imgBox.value="Enter image url here (x.jpg, x.png, etc): ";
         }
     }
 
     function saveEnvironment() {
       const name = document.getElementById("name-box").value;
       const description = document.getElementById("description-box").value;
-      const picSrc = document.getElementById("pic-box").src;
+      const picSrc = document.getElementById("img-box").value;
 
       google.script.run.insertEnvironmentToDoc(name, description, picSrc);
     }
@@ -146,6 +164,7 @@
         <div class = info style="display: flex; flex-direction: column">
           <textarea id="description-box" style="width: 100%; height: 200px; margin-top: 20px; text-align:left; font-size:16px; font-style:italic; resize: none;"></textarea>
           <textarea type="hidden" id="name-box" style="width: 95%; height: 35px; margin-top: 5px; text-align:left; font-size:17px; font-style:italic; resize: none; display:none;""></textarea>
+          <textarea type="hidden" id="img-box" style="width: 95%; height: 70px; margin-top: 5px; text-align:left; font-size:17px; font-style:italic; resize: none; display:none;""></textarea>
         </div>
       </div>
       <div class="submit-button" style="display: flex; justify-content:left; margin-top: 25px;">
