@@ -56,6 +56,7 @@ function updateCharacter() {
   this.imgIndex = 4;
   this.invIndex = 5;
   this.attackIndex = 6;
+  this.typeIndex = 7;
 }
 
 updateCharacter.prototype.newCharacter = function(name, chrClass, stats, desc, inv, attacks, image) {
@@ -66,7 +67,8 @@ updateCharacter.prototype.newCharacter = function(name, chrClass, stats, desc, i
     ["Description", desc],
     ["Image", ""],
     ["Inventory", inv],
-    ["Attacks", attacks]
+    ["Attacks", attacks],
+    ["Type", "Character"]
   ];
 
   table = this.body.appendTable(tableData);
@@ -75,6 +77,7 @@ updateCharacter.prototype.newCharacter = function(name, chrClass, stats, desc, i
     const response = UrlFetchApp.fetch(image);
     const imageBlob = response.getBlob();
     const img = table.getCell(this.imgIndex, 1).insertImage(0, imageBlob);
+    img.setLinkUrl(image);
 
     // Resize the image
     img.setWidth(120);
