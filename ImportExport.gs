@@ -39,33 +39,34 @@ function ExportAllTables(fileNameScheme) {
 
 function ImportFile(base64Content) {
   const blob = Utilities.newBlob(Utilities.base64Decode(base64Content));
-  const content = blob.getDataAsString().trim().split("\n"); // Gets the file content as text
+  const content = Utilities.parseCsv(blob.getDataAsString().trim());  // Use parseCsv to handle CSV correctly
 
-  for (var i = 0; i < content.length; i++) {
-    content[i] = content[i].split(",\"");
-    content[i][1] = content[i][1].slice(0, -1);
-  }
+  // Assuming the data looks like this:
+  // [0][1] = Name, [1][1] = Class, [2][1] = Stats, [3][1] = Description, ...
+  // Handle content processing row by row
+  const charClass = new updateCharacter();
+  const encClass = new updateEncounter();
+  const envClass = new updateEnvironment();
+  const invClass = new updateInventory();
+  const dicClass = new updateDice();
 
-  var charClass = new updateCharacter();
-  var encClass = new updateEncounter();
-  var envClass = new updateEnvironment();
-  var invClass = new updateInventory();
-  var dicClass = new updateDice();
+  const type = content[content.length - 1][1];  // The last row should indicate the type (Character, Encounter, etc.)
 
-  console.log(content[content.length - 1][1]);
+  // Debugging: Log the full content to see the parsed data
+  console.log(content);
 
-  if (content[content.length - 1][1] == "Character") {
-    charClass.newCharacter(content[0][1], content[1][1], content[2][1], content[3][1], content[4][1], content[5][1], content[6][1]);
-  } else if (content[content.length - 1][1] == "Encounter") {
+  if (type == "Character") {
+    charClass.newCharacter(content[0][1], content[1][1], content[2][1], content[3][1], content[5][1], content[6][1], content[4][1]);
+  } else if (type == "Encounter") {
     encClass.newEncounter(content[0][1], content[1][1], content[2][1], content[3][1]);
-  } else if (content[content.length - 1][1] == "Environment") {
+  } else if (type == "Environment") {
     envClass.newEnvironment(content[0][1], content[1][1], content[2][1]);
-  } else if (content[content.length - 1][1] == "Inventory") {
-    invClass.newInventory(content[0][1], content[1][1], content[2][1], content[3][1])
-  } else if (content[content.length - 1][1] == "Dice") {
-    dicClass.newDice(content[0][1], content[1][1], content[2][1], content[3][1], content[4][1], content[5][1])
+  } else if (type == "Inventory") {
+    invClass.newInventory(content[0][1], content[1][1], content[2][1], content[3][1], content[4][1]);
+  } else if (type == "Dice") {
+    dicClass.newDice(content[0][1], content[1][1], content[2][1], content[3][1], content[4][1], content[5][1]);
   } else {
-    console.log("Unrecongnized table type.");
+    console.log("Unrecognized table type.");
   }
 }
 
