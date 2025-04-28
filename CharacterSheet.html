@@ -181,7 +181,9 @@
       const description = document.getElementById("description-box").value;
       const inventory = document.getElementById("inventory-box").value;
       const attacks = document.getElementById("attacks-box").value;
-      const imgSrc = document.getElementById("img-box").value;
+      const imgbox = document.getElementById("img-box").value;
+      let picBox = document.getElementById("pic-box");
+      picBox.src = imgbox;
 
       const statInputs = document.querySelectorAll("#stats-box input");
       const stats = Array.from(statInputs).map(input => input.value || 0);
@@ -197,7 +199,7 @@
       statsFinal+="WIS:"+stats[7]+",";
       statsFinal+="CHA:"+stats[8]+"]";
 
-      google.script.run.insertCharacterToDoc(name, title, statsFinal, description, inventory, attacks, imgSrc, stats);
+      google.script.run.insertCharacterToDoc(name, title, statsFinal, description, inventory, attacks, picBox.src, stats);
     }
     window.onload = function() {
       showInfo('Wizard');
